@@ -8,11 +8,13 @@
     <style>
         /* marutパズル専用のスタイルがあればここに記述 */
         .puzzle-board {
-            display: flex; /* テーブルとカードエリアを横並びにするため (後で調整) */
+            display: flex; /* テーブルとカードエリアを横並びにするため */
             margin-top: 20px;
+            flex-wrap: wrap; /* 画面が狭い場合に折り返すように */
         }
         #declension-table-area {
             margin-right: 30px; /* テーブルとカードエリアの間隔 */
+            margin-bottom: 20px; /* 画面が狭くて折り返した場合の下マージン */
         }
         #declension-table table {
             border-collapse: collapse; /* テーブルの線を重ねる */
@@ -24,23 +26,42 @@
             height: 35px;    /* セルの高さ */
             text-align: center;
             vertical-align: middle;
+            font-size: 0.9em; /* セル内の文字が大きすぎる場合調整 */
         }
         .dropzone {
             background-color: #f0f0f0; /* カードを置ける場所の仮の背景色 */
+            /* ↓ セルが空の時に高さが潰れないようにするおまじない */
+            min-height: 35px; /* tdのheightと同じかそれ以上 */
+            box-sizing: border-box; /* paddingとborderを高さに含める */
         }
         #cards-area {
             border: 2px dashed #ccc;
             padding: 10px;
-            width: 250px; /* カードエリアの仮の幅 */
+            width: 280px; /* カードエリアの幅 (カードサイズに合わせて調整) */
             min-height: 300px; /* カードエリアの仮の高さ */
+            display: flex; /* カードを横に並べる */
+            flex-wrap: wrap; /* カードがエリア幅を超えたら折り返す */
+            align-content: flex-start; /* 折り返したカードを上から詰める */
+            background-color: #f9f9f9;
         }
-        .card { /* カードの仮スタイル (後でJSで生成) */
+        .card {
             border: 1px solid #999;
             background-color: white;
             padding: 5px 10px;
-            margin: 5px;
-            cursor: grab;
-            display: inline-block; /* カードが横に並ぶように */
+            margin: 4px; /* カード間のマージン */
+            cursor: grab; /* ドラッグできることを示すカーソル */
+            font-size: 0.95em;
+            border-radius: 4px;
+            user-select: none; /* ドラッグ中にテキスト選択されるのを防ぐ */
+        }
+        .controls { /* コントロールエリアのスタイル */
+            margin-bottom: 20px;
+            text-align: left; /* 左寄せにする場合 */
+        }
+        .controls button { /* ボタンの共通スタイル */
+            padding: 8px 15px;
+            margin-left: 10px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -48,9 +69,9 @@
     <h1>名詞活用パズル: marut（風）</h1>
 
     <div class="controls">
-        <!-- ここに文字種トグルボタンやガイドON/OFFボタンなどを後で追加 -->
-        <p>スコア: <span id="score">0</span> / 24</p>
+        <p style="display: inline-block; margin-right: 20px;">スコア: <span id="score">0</span> / 24</p>
         <button id="reset-button">リセット</button>
+        <!-- ここに文字種トグルボタンやガイドON/OFFボタンなどを後で追加 -->
     </div>
 
     <div class="puzzle-board">
@@ -119,9 +140,7 @@
         </div>
 
         <div id="cards-area">
-            <p>カード置き場 (ここからドラッグ)</p>
-            <!-- カードは後でJavaScriptでここに生成します -->
-            <!-- 例: <div class="card" draggable="true">marut</div> -->
+            {/* カードはJavaScriptでここに生成します */}
         </div>
     </div>
 
@@ -130,14 +149,56 @@
     <script src="../../common/script.js"></script> {/* 共通JSへのパス */}
     <script src="marut-data.js"></script> {/* marut専用データJSへのパス */}
     <script>
-        // marutパズル専用のJavaScriptをここに記述 (またはmarut.jsファイルを作成して読み込む)
-        console.log("marut puzzle page loaded");
-        // marutCardsData が正しく読み込めているか確認 (marut-data.jsが読み込まれた後)
-        if (typeof marutCardsData !== 'undefined') {
-            console.log("marutCardsData is available:", marutCardsData);
-        } else {
-            console.error("marutCardsData is NOT available. Check marut-data.js path and content.");
-        }
+        document.addEventListener('DOMContentLoaded', () => { // DOMの読み込み完了後に実行
+            console.log("marut puzzle page loaded");
+
+            const scoreElement = document.getElementById('score'); // スコア表示用
+            let currentScore = 0;
+            const totalCards = (typeof marutCardsData !== 'undefined') ? marutCardsData.length : 0;
+            scoreElement.textContent = `${currentScore} / ${totalCards}`;
+
+
+            if (typeof marutCardsData !== 'undefined' && marutCardsData.length > 0) {
+                console.log("marutCardsData is available:", marutCardsData.length, "cards");
+                const cardsArea = document.getElementById('cards-area');
+                // cardsArea.innerHTML = ''; //  <p>カード置き場...</p> があればクリアするが、今回は最初から空なので不要
+
+                // カードをシャッフル
+                const shuffledCards = [...marutCardsData].sort(() => Math.random() - 0.5);
+
+                shuffledCards.forEach(cardData => {
+                    const cardElement = document.createElement('div');
+                    cardElement.id = cardData.id;
+                    cardElement.classList.add('card');
+                    cardElement.draggable = true;
+                    cardElement.textContent = cardData.romaji; // まずはローマ字で表示
+                    cardElement.dataset.correctCell = cardData.correctCell;
+                    cardElement.dataset.romaji = cardData.romaji; // ローマ字データを保持
+                    cardElement.dataset.devanagari = cardData.devanagari; // デーヴァナーガリーデータを保持
+
+                    cardsArea.appendChild(cardElement);
+                });
+            } else {
+                console.error("marutCardsData is NOT available or empty. Check marut-data.js path and content.");
+                const cardsArea = document.getElementById('cards-area');
+                if(cardsArea) cardsArea.textContent = "カードデータの読み込みに失敗しました。";
+            }
+
+            // --- ここからドラッグ＆ドロップのロジックなどを追加していく ---
+            // (この部分は長くなるので、まずはカード表示までを確認します)
+
+            // リセットボタンの仮機能
+            const resetButton = document.getElementById('reset-button');
+            if(resetButton) {
+                resetButton.addEventListener('click', () => {
+                    // 本当のリセット処理は後で実装
+                    alert("リセットボタンが押されました (実際の処理は未実装です)");
+                    // 例: カードをカードエリアに戻し、スコアを0にするなど
+                    // location.reload(); // 簡単なリセットとしてページを再読み込み
+                });
+            }
+
+        });
     </script>
 </body>
 </html>
