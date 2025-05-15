@@ -253,15 +253,13 @@
                                 }, 100);
                             }
                         } else {
-                            console.log('Cell is already occupied. Card not moved.');
-                            // 必要であれば、カードを元のカードエリアに戻すなどの処理を追加
-                            // if (cardsArea) cardsArea.appendChild(draggedCard);
+                            console.log('Cell is already occupied. Card returned to cards area.');
+                            if (cardsArea) cardsArea.appendChild(draggedCard); // コメントアウトを外す
                         }
                     } else {
                         // 不正解の場合
-                        console.log('Incorrect! Card not moved.');
-                        // 必要であれば、カードを元のカードエリアに戻すなどの処理を追加
-                        // if (cardsArea) cardsArea.appendChild(draggedCard);
+                        console.log('Incorrect! Card returned to cards area.');
+                        if (cardsArea) cardsArea.appendChild(draggedCard); // コメントアウトを外す
                     }
                 }
                 draggedCard = null; // ドロップ処理が終わったらドラッグ中カード情報をクリア
