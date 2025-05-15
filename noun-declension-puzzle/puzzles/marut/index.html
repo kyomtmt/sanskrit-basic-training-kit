@@ -148,55 +148,142 @@
 
     <script src="../../common/script.js"></script> {/* 共通JSへのパス */}
     <script src="marut-data.js"></script> {/* marut専用データJSへのパス */}
-    <script>
+<script>
         document.addEventListener('DOMContentLoaded', () => { // DOMの読み込み完了後に実行
             console.log("marut puzzle page loaded");
 
-            const scoreElement = document.getElementById('score'); // スコア表示用
-            let currentScore = 0;
-            const totalCards = (typeof marutCardsData !== 'undefined') ? marutCardsData.length : 0;
-            scoreElement.textContent = `${currentScore} / ${totalCards}`;
-
-
-            if (typeof marutCardsData !== 'undefined' && marutCardsData.length > 0) {
-                console.log("marutCardsData is available:", marutCardsData.length, "cards");
-                const cardsArea = document.getElementById('cards-area');
-                // cardsArea.innerHTML = ''; //  <p>カード置き場...</p> があればクリアするが、今回は最初から空なので不要
-
-                // カードをシャッフル
-                const shuffledCards = [...marutCardsData].sort(() => Math.random() - 0.5);
-
-                shuffledCards.forEach(cardData => {
-                    const cardElement = document.createElement('div');
-                    cardElement.id = cardData.id;
-                    cardElement.classList.add('card');
-                    cardElement.draggable = true;
-                    cardElement.textContent = cardData.romaji; // まずはローマ字で表示
-                    cardElement.dataset.correctCell = cardData.correctCell;
-                    cardElement.dataset.romaji = cardData.romaji; // ローマ字データを保持
-                    cardElement.dataset.devanagari = cardData.devanagari; // デーヴァナーガリーデータを保持
-
-                    cardsArea.appendChild(cardElement);
-                });
-            } else {
-                console.error("marutCardsData is NOT available or empty. Check marut-data.js path and content.");
-                const cardsArea = document.getElementById('cards-area');
-                if(cardsArea) cardsArea.textContent = "カードデータの読み込みに失敗しました。";
-            }
-
-            // --- ここからドラッグ＆ドロップのロジックなどを追加していく ---
-            // (この部分は長くなるので、まずはカード表示までを確認します)
-
-            // リセットボタンの仮機能
+            // HTML要素の取得
+            const scoreElement = document.getElementById('score');
+            const cardsArea = document.getElementById('cards-area');
+            const dropzones = document.querySelectorAll('.dropzone'); // 全てのセル
             const resetButton = document.getElementById('reset-button');
-            if(resetButton) {
+
+            // ゲームの状態を管理する変数
+            let currentScore = 0;
+            let totalCards = 0;
+            let draggedCard = null; // 現在ドラッグ中のカード要素
+
+            // スコア表示を更新する関数
+            function updateScoreDisplay() {
+                if (scoreElement) {
+                    scoreElement.textContent = `${currentScore} / ${totalCards}`;
+                }
+            }
+
+            // パズルを初期化/リセットする関数
+            function initializePuzzle() {
+                currentScore = 0;
+                draggedCard = null;
+                if (cardsArea) cardsArea.innerHTML = ''; // カードエリアをクリア
+                dropzones.forEach(zone => {
+                    zone.innerHTML = ''; // 各セルをクリア
+                    zone.classList.remove('occupied'); // もし占有を示すクラスがあれば削除
+                });
+
+                if (typeof marutCardsData !== 'undefined' && marutCardsData.length > 0) {
+                    totalCards = marutCardsData.length;
+                    console.log("marutCardsData is available:", totalCards, "cards");
+
+                    const shuffledCards = [...marutCardsData].sort(() => Math.random() - 0.5); // カードをシャッフル
+
+                    shuffledCards.forEach(cardData => {
+                        const cardElement = document.createElement('div');
+                        cardElement.id = cardData.id;
+                        cardElement.classList.add('card');
+                        cardElement.draggable = true;
+                        cardElement.textContent = cardData.romaji; // 初期表示はローマ字
+                        cardElement.dataset.correctCell = cardData.correctCell;
+                        cardElement.dataset.romaji = cardData.romaji;
+                        cardElement.dataset.devanagari = cardData.devanagari;
+
+                        // ドラッグイベントのリスナーを設定
+                        cardElement.addEventListener('dragstart', handleDragStart);
+                        cardElement.addEventListener('dragend', handleDragEnd);
+
+                        if (cardsArea) cardsArea.appendChild(cardElement);
+                    });
+                } else {
+                    totalCards = 0; // データがない場合は0に
+                    console.error("marutCardsData is NOT available or empty. Check marut-data.js path and content.");
+                    if (cardsArea) cardsArea.textContent = "カードデータの読み込みに失敗しました。";
+                }
+                updateScoreDisplay(); // スコア表示を初期化/更新
+            }
+
+            // --- ドラッグ＆ドロップ関連のイベントハンドラ ---
+            function handleDragStart(event) {
+                draggedCard = event.target; // ドラッグされた要素を保存
+                event.dataTransfer.setData('text/plain', event.target.id); // ドラッグするデータの種類と値を設定
+                // event.target.style.opacity = '0.5'; // ドラッグ中に半透明にする（任意）
+                console.log('DragStart:', draggedCard.id);
+            }
+
+            function handleDragEnd(event) {
+                // event.target.style.opacity = '1'; // 透明度を元に戻す（任意）
+                // draggedCard = null; // ここでクリアするとdropイベントで不都合な場合があるのでdrop後が良いことも
+                console.log('DragEnd for:', event.target.id);
+            }
+
+            function handleDragOver(event) {
+                event.preventDefault(); // これがないとdropイベントが発火しない
+            }
+
+            function handleDrop(event) {
+                event.preventDefault(); // ブラウザのデフォルトのドロップ処理をキャンセル
+                const targetCell = event.target.closest('.dropzone'); // ドロップ先のセルを取得
+
+                if (draggedCard && targetCell) {
+                    console.log('Drop:', draggedCard.id, 'on cell:', targetCell.id);
+
+                    // 正誤判定
+                    if (draggedCard.dataset.correctCell === targetCell.id) {
+                        // 正解の場合
+                        if (targetCell.children.length === 0) { // セルが空の場合のみ配置
+                            targetCell.appendChild(draggedCard); // カードをセルに移動
+                            // draggedCard.draggable = false; // 配置後はドラッグ不可にする場合
+                            // draggedCard.style.cursor = 'default';
+                            currentScore++;
+                            updateScoreDisplay();
+                            console.log('Correct!');
+
+                            // 全問正解チェック
+                            if (currentScore === totalCards && totalCards > 0) {
+                                setTimeout(() => { // alertが他の処理をブロックしないように
+                                    alert("素晴らしい！全問正解です！");
+                                }, 100);
+                            }
+                        } else {
+                            console.log('Cell is already occupied. Card not moved.');
+                            // 必要であれば、カードを元のカードエリアに戻すなどの処理を追加
+                            // if (cardsArea) cardsArea.appendChild(draggedCard);
+                        }
+                    } else {
+                        // 不正解の場合
+                        console.log('Incorrect! Card not moved.');
+                        // 必要であれば、カードを元のカードエリアに戻すなどの処理を追加
+                        // if (cardsArea) cardsArea.appendChild(draggedCard);
+                    }
+                }
+                draggedCard = null; // ドロップ処理が終わったらドラッグ中カード情報をクリア
+            }
+
+            // --- イベントリスナーの設定 ---
+            // ドロップゾーン（各セル）にイベントリスナーを設定
+            dropzones.forEach(zone => {
+                zone.addEventListener('dragover', handleDragOver);
+                zone.addEventListener('drop', handleDrop);
+            });
+
+            // リセットボタンにイベントリスナーを設定
+            if (resetButton) {
                 resetButton.addEventListener('click', () => {
-                    // 本当のリセット処理は後で実装
-                    alert("リセットボタンが押されました (実際の処理は未実装です)");
-                    // 例: カードをカードエリアに戻し、スコアを0にするなど
-                    // location.reload(); // 簡単なリセットとしてページを再読み込み
+                    console.log('Reset button clicked');
+                    initializePuzzle(); // パズルを初期状態に戻す
                 });
             }
+
+            // --- 初期化処理の実行 ---
+            initializePuzzle();
 
         });
     </script>
