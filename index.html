@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanskrit Beginner's Training Kit</title>
+    <style>
+        /* 基本的なスタイル */
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px; /* タイトルとボタンリストの間隔を調整 (現在の1.5倍を想定) */
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin: 20px 0; /* ボタン間の間隔を調整 (現在の倍を想定) */
+        }
+        a {
+            text-decoration: none;
+            font-size: 1.2em;
+            color: white;
+            background-color: #007bff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        a:hover {
+            background-color: #0056b3;
+        }
+        a.disabled {
+            background-color: #ccc;
+            pointer-events: none;
+            cursor: default;
+        }
+
+        /* 例: 簡単なメディアクエリ */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.5em;
+                margin-bottom: 20px; /* スマホ表示時のタイトル下のマージンも調整 */
+            }
+            li {
+                margin: 15px 0; /* スマホ表示時のボタン間マージンも調整 */
+            }
+            a {
+                font-size: 1em;
+                padding: 8px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Sanskrit Beginner's Training Kit</h1>
+    <ul>
+        <li><a href="noun-declension-puzzle/">名詞活用パズル (準備中)</a></li>
+        <li><a href="sandhi-quiz/">サンディクイズ</a></li>
+        <li><a href="verb-conjugation-puzzle/" class="disabled">動詞活用パズル (準備中)</a></li>
+    </ul>
+</body>
+</html>
