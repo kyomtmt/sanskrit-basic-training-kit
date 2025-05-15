@@ -4,14 +4,140 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>名詞活用パズル: marut</title>
-    <link rel="stylesheet" href="../../common/style.css">
+    <link rel="stylesheet" href="../../common/style.css"> {/* 共通CSSへのパス */}
+    <style>
+        /* marutパズル専用のスタイルがあればここに記述 */
+        .puzzle-board {
+            display: flex; /* テーブルとカードエリアを横並びにするため (後で調整) */
+            margin-top: 20px;
+        }
+        #declension-table-area {
+            margin-right: 30px; /* テーブルとカードエリアの間隔 */
+        }
+        #declension-table table {
+            border-collapse: collapse; /* テーブルの線を重ねる */
+        }
+        #declension-table th, #declension-table td {
+            border: 1px solid black; /* テーブルの線 */
+            padding: 8px;
+            min-width: 80px; /* セルの最小幅 */
+            height: 35px;    /* セルの高さ */
+            text-align: center;
+            vertical-align: middle;
+        }
+        .dropzone {
+            background-color: #f0f0f0; /* カードを置ける場所の仮の背景色 */
+        }
+        #cards-area {
+            border: 2px dashed #ccc;
+            padding: 10px;
+            width: 250px; /* カードエリアの仮の幅 */
+            min-height: 300px; /* カードエリアの仮の高さ */
+        }
+        .card { /* カードの仮スタイル (後でJSで生成) */
+            border: 1px solid #999;
+            background-color: white;
+            padding: 5px 10px;
+            margin: 5px;
+            cursor: grab;
+            display: inline-block; /* カードが横に並ぶように */
+        }
+    </style>
 </head>
 <body>
     <h1>名詞活用パズル: marut</h1>
-    <p>ここにmarutパズルの内容が表示されます。</p>
+
+    <div class="controls">
+        <!-- ここに文字種トグルボタンやガイドON/OFFボタンなどを後で追加 -->
+        <p>スコア: <span id="score">0</span> / 24</p>
+        <button id="reset-button">リセット</button>
+    </div>
+
+    <div class="puzzle-board">
+        <div id="declension-table-area">
+            <p>活用表 (ここにカードをドラッグ＆ドロップ)</p>
+            <table id="declension-table">
+                <thead>
+                    <tr>
+                        <th>格</th>
+                        <th>単数 (Singular)</th>
+                        <th>両数 (Dual)</th>
+                        <th>複数 (Plural)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>主格 (Nominative)</td>
+                        <td id="cell-nom-sg" class="dropzone"></td>
+                        <td id="cell-nom-du" class="dropzone"></td>
+                        <td id="cell-nom-pl" class="dropzone"></td>
+                    </tr>
+                    <tr>
+                        <td>対格 (Accusative)</td>
+                        <td id="cell-acc-sg" class="dropzone"></td>
+                        <td id="cell-acc-du" class="dropzone"></td>
+                        <td id="cell-acc-pl" class="dropzone"></td>
+                    </tr>
+                    <tr>
+                        <td>具格 (Instrumental)</td>
+                        <td id="cell-ins-sg" class="dropzone"></td>
+                        <td id="cell-ins-du" class="dropzone"></td>
+                        <td id="cell-ins-pl" class="dropzone"></td>
+                    </tr>
+                    <tr>
+                        <td>与格 (Dative)</td>
+                        <td id="cell-dat-sg" class="dropzone"></td>
+                        <td id="cell-dat-du" class="dropzone"></td>
+                        <td id="cell-dat-pl" class="dropzone"></td>
+                    </tr>
+                    <tr>
+                        <td>奪格 (Ablative)</td>
+                        <td id="cell-abl-sg" class="dropzone"></td>
+                        <td id="cell-abl-du" class="dropzone"></td>
+                        <td id="cell-abl-pl" class="dropzone"></td>
+                    </tr>
+                    <tr>
+                        <td>属格 (Genitive)</td>
+                        <td id="cell-gen-sg" class="dropzone"></td>
+                        <td id="cell-gen-du" class="dropzone"></td>
+                        <td id="cell-gen-pl" class="dropzone"></td>
+                    </tr>
+                    <tr>
+                        <td>処格 (Locative)</td>
+                        <td id="cell-loc-sg" class="dropzone"></td>
+                        <td id="cell-loc-du" class="dropzone"></td>
+                        <td id="cell-loc-pl" class="dropzone"></td>
+                    </tr>
+                    <tr>
+                        <td>呼格 (Vocative)</td>
+                        <td id="cell-voc-sg" class="dropzone"></td>
+                        <td id="cell-voc-du" class="dropzone"></td>
+                        <td id="cell-voc-pl" class="dropzone"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="cards-area">
+            <p>カード置き場 (ここからドラッグ)</p>
+            <!-- カードは後でJavaScriptでここに生成します -->
+            <!-- 例: <div class="card" draggable="true">marut</div> -->
+        </div>
+    </div>
+
     <p><a href="../../../index.html">全体メニューに戻る</a></p>
 
-    <script src="../../common/script.js"></script>
-    <!-- <script src="marut-data.js"></script> --> <!-- marut専用データJS (後で作成) -->
+    <script src="../../common/script.js"></script> {/* 共通JSへのパス */}
+    <script src="marut-data.js"></script> {/* marut専用データJSへのパス */}
+    <script>
+        // marutパズル専用のJavaScriptをここに記述 (またはmarut.jsファイルを作成して読み込む)
+        console.log("marut puzzle page loaded");
+        // marutCardsData が正しく読み込めているか確認 (marut-data.jsが読み込まれた後)
+        if (typeof marutCardsData !== 'undefined') {
+            console.log("marutCardsData is available:", marutCardsData);
+        } else {
+            console.error("marutCardsData is NOT available. Check marut-data.js path and content.");
+        }
+    </script>
 </body>
 </html>
