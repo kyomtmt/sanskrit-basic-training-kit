@@ -7,65 +7,9 @@
     <link rel="stylesheet" href="../../common/style.css"> {/* 共通CSSへのパス */}
     <style>
         /* marutパズル専用のスタイルがあればここに記述 */
-        .puzzle-board {
-            display: flex; /* テーブルとカードエリアを横並びにするため */
-            margin-top: 20px;
-            flex-wrap: wrap; /* 画面が狭い場合に折り返すように */
-        }
-        #declension-table-area {
-            margin-right: 30px; /* テーブルとカードエリアの間隔 */
-            margin-bottom: 20px; /* 画面が狭くて折り返した場合の下マージン */
-        }
-        #declension-table table {
-            border-collapse: collapse; /* テーブルの線を重ねる */
-        }
-        #declension-table th, #declension-table td {
-            border: 1px solid black; /* テーブルの線 */
-            padding: 8px;
-            min-width: 80px; /* セルの最小幅 */
-            height: 35px;    /* セルの高さ */
-            text-align: center;
-            vertical-align: middle;
-            font-size: 0.9em; /* セル内の文字が大きすぎる場合調整 */
-        }
-        .dropzone {
-            background-color: #f0f0f0; /* カードを置ける場所の仮の背景色 */
-            /* ↓ セルが空の時に高さが潰れないようにするおまじない */
-            min-height: 35px; /* tdのheightと同じかそれ以上 */
-            box-sizing: border-box; /* paddingとborderを高さに含める */
-        }
-        #cards-area {
-            border: 2px dashed #ccc;
-            padding: 10px;
-            width: 280px; /* カードエリアの幅 (カードサイズに合わせて調整) */
-            min-height: 300px; /* カードエリアの仮の高さ */
-            display: flex; /* カードを横に並べる */
-            flex-wrap: wrap; /* カードがエリア幅を超えたら折り返す */
-            align-content: flex-start; /* 折り返したカードを上から詰める */
-            background-color: #f9f9f9;
-        }
-        .card {
-            border: 1px solid #999;
-            background-color: white;
-            padding: 5px 10px;
-            margin: 4px; /* カード間のマージン */
-            cursor: grab; /* ドラッグできることを示すカーソル */
-            font-size: 0.95em;
-            border-radius: 4px;
-            user-select: none; /* ドラッグ中にテキスト選択されるのを防ぐ */
-        }
-        .controls { /* コントロールエリアのスタイル */
-            margin-bottom: 20px;
-            text-align: left; /* 左寄せにする場合 */
-        }
-        .controls button { /* ボタンの共通スタイル */
-            padding: 8px 15px;
-            margin-left: 10px;
-            cursor: pointer;
-        }
+        /* common/style.cssでカバーされているので、ここは空でもOK */
     </style>
-</head>
-<body>
+</head><body>
     <h1>名詞活用パズル: marut（風）</h1>
 
     <div class="controls">
