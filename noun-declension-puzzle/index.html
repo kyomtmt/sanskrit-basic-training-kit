@@ -4,24 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>名詞活用パズル - メニュー</title>
-    <link rel="stylesheet" href="../common/style.css"> 
+    <link rel="stylesheet" href="../common/style.css">
     <style>
-        /* このページ専用のスタイルがあればここに */
         body { text-align: center; }
         ul { list-style: none; padding: 0; }
         li { margin: 15px 0; }
-        /* ルートのindex.htmlからスタイルをいくつか拝借 */
-        a {
+        a { /* 通常のパズル選択ボタンのスタイル */
             text-decoration: none;
             font-size: 1.2em;
             color: white;
             background-color: #007bff;
-            padding: 10px 20px;
-            border-radius: 5px;
+            padding: 12px 20px;
+            border-radius: 8px;
             display: inline-block;
+            width: 320px; /* ボタン幅を統一 (調整してください) */
+            box-sizing: border-box;
+            transition: background-color 0.2s ease;
         }
         a:hover {
             background-color: #0056b3;
+        }
+
+        a.back-to-main-menu { /* 「全体メニューに戻る」ボタン専用スタイル */
+            background-color: #6c757d; /* グレー系 */
+            margin-top: 25px; /* 上のリストとの間隔を少し空ける */
+        }
+        a.back-to-main-menu:hover {
+            background-color: #5a6268;
         }
     </style>
 </head>
@@ -33,7 +42,7 @@
         <li><a href="puzzles/jagat/">jagat (世界) - 中性名詞</a></li>
         <!-- 他の名詞パズルへのリンクは後で追加 -->
     </ul>
-    <p><a href="../index.html" class="back-to-main-menu">全体メニューに戻る</a></p> 
+    <p><a href="../index.html" class="back-to-main-menu">全体メニューに戻る</a></p>
     <script src="../common/script.js"></script>
 </body>
 </html>
