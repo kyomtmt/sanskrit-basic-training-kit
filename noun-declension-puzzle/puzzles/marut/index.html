@@ -162,55 +162,63 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
     }
 
-    function handleDrop(event) {
-        event.preventDefault();
-        const targetCell = event.target.closest('.dropzone');
-        const draggedCardId = event.dataTransfer.getData('text/plain');
+function handleDrop(event) {
+    event.preventDefault();
+    const targetCell = event.target.closest('.dropzone');
+    const draggedCardId = event.dataTransfer.getData('text/plain'); // カードのIDを取得
 
-        if (draggedCardElement && draggedCardElement.id === draggedCardId && targetCell) {
-            const droppedCardRomaji = draggedCardElement.dataset.romaji;
-            const targetCellId = targetCell.id;
+    // draggedCardElement は dragstart イベントで設定されているはず
+    if (draggedCardElement && draggedCardElement.id === draggedCardId && targetCell) {
+        const droppedCardRomaji = draggedCardElement.dataset.romaji;
+        const targetCellId = targetCell.id;
 
-            console.log('Attempting Drop:', draggedCardElement.id, `(R: "${droppedCardRomaji}")`, 'on cell:', targetCellId);
+        console.log('Attempting Drop:', draggedCardElement.id, `(R: "${droppedCardRomaji}")`, 'on cell:', targetCellId);
 
-            let isCorrectPlacement = false;
-            let matchingCardDef = null;
+        let isCorrectPlacement = false;
+        let matchingCardDef = null; // 一致したカード定義を保持
 
-            for (const cardDef of marutCardsData) {
-                if (cardDef.correctCell === targetCellId && cardDef.romaji === droppedCardRomaji) {
-                    isCorrectPlacement = true;
-                    matchingCardDef = cardDef;
-                    break;
-                }
-            }
-
-            if (isCorrectPlacement && matchingCardDef) {
-                if (targetCell.children.length === 0) {
-                    targetCell.appendChild(draggedCardElement);
-                    currentScore++;
-                    updateScoreDisplay();
-                    console.log('Correct! Placed card:', draggedCardElement.id, 'matching definition:', matchingCardDef.id);
-
-                    if (currentScore === totalCards && totalCards > 0) {
-                        setTimeout(() => {
-                            alert("素晴らしい！全問正解です！");
-                        }, 100);
-                    }
-                } else {
-                    console.log('Cell is already occupied. Card returned to cards area.');
-                    if (cardsArea) cardsArea.appendChild(draggedCardElement);
-                }
-            } else {
-                console.log('Incorrect placement! Card returned to cards area. Details:');
-                console.log(' - Dragged Card Romaji:', `"${droppedCardRomaji}"`);
-                console.log(' - Target Cell ID:', `"${targetCellId}"`);
-                console.log(' - No matching definition found in marutCardsData for this cell and romaji combination.');
-                if (cardsArea) cardsArea.appendChild(draggedCardElement);
+        // marutCardsDataをループして、targetCellIdにこのカードのテキストが対応する定義があるかチェック
+        for (const cardDef of marutCardsData) {
+            if (cardDef.correctCell === targetCellId && cardDef.romaji === droppedCardRomaji) {
+                isCorrectPlacement = true;
+                matchingCardDef = cardDef; // 一致した定義を保存
+                break;
             }
         }
-        draggedCardElement = null;
-    }
 
+        if (isCorrectPlacement && matchingCardDef) {
+            // 正解の場合
+            if (targetCell.children.length === 0) { // セルが空の場合のみ配置
+                targetCell.appendChild(draggedCardElement); // 実際にドラッグされたカードを移動
+                
+                // ★★★ 正解カードにクラスを追加 ★★★
+                draggedCardElement.classList.add('placed-correctly');
+                console.log('Added .placed-correctly to:', draggedCardElement.id, 'Current classes:', draggedCardElement.className);
+
+                currentScore++;
+                updateScoreDisplay();
+                console.log('Correct! Placed card:', draggedCardElement.id, 'matching definition:', matchingCardDef.id);
+
+                if (currentScore === totalCards && totalCards > 0) {
+                    setTimeout(() => {
+                        alert("素晴らしい！全問正解です！");
+                    }, 100);
+                }
+            } else {
+                console.log('Cell is already occupied. Card returned to cards area.');
+                if (cardsArea) cardsArea.appendChild(draggedCardElement); // 元の場所に戻す
+            }
+        } else {
+            // 不正解の場合
+            console.log('Incorrect placement! Card returned to cards area. Details:');
+            console.log(' - Dragged Card Romaji:', `"${droppedCardRomaji}"`);
+            console.log(' - Target Cell ID:', `"${targetCellId}"`);
+            console.log(' - No matching definition found in marutCardsData for this cell and romaji combination.');
+            if (cardsArea) cardsArea.appendChild(draggedCardElement); // 元の場所に戻す
+        }
+    }
+    draggedCardElement = null; // ドロップ処理が終わったらドラッグ中カード情報をクリア
+}
     dropzones.forEach(zone => {
         zone.addEventListener('dragover', handleDragOver);
         zone.addEventListener('drop', handleDrop);
