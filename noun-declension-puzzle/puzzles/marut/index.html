@@ -225,48 +225,55 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
     }
 
-    function handleDrop(event) {
-        event.preventDefault();
-        const targetCell = event.target.closest('.dropzone');
-        const cardId = event.dataTransfer.getData('text/plain'); // ドラッグされたカードのIDを取得
-        // draggedCardElement は dragstart で設定されているはず
+function handleDrop(event) {
+    event.preventDefault();
+    const targetCell = event.target.closest('.dropzone');
+    const draggedCardId = event.dataTransfer.getData('text/plain'); // ドラッグされたカードのID
+    // draggedCardElement は dragstart で設定済みの、実際にドラッグされたDOM要素
 
-        if (draggedCardElement && draggedCardElement.id === cardId && targetCell) {
-            console.log('Drop:', draggedCardElement.id, 'on cell:', targetCell.id);
+    if (draggedCardElement && draggedCardElement.id === draggedCardId && targetCell) {
+        const droppedCardRomaji = draggedCardElement.dataset.romaji; // ドラッグされたカードのローマ字
+        const droppedCardDevanagari = draggedCardElement.dataset.devanagari; // ドラッグされたカードのデーヴァナーガリー
+        const targetCellId = targetCell.id;
 
-            // 正誤判定: カードのdata-correct-cellとドロップ先セルのidが一致するか
-            if (draggedCardElement.dataset.correctCell === targetCell.id) {
-                // 正解の場合
-                if (targetCell.children.length === 0) { // セルが空の場合のみ配置
-                    targetCell.appendChild(draggedCardElement); // カードをセルに移動 (カードエリアから消える)
-                    // draggedCardElement.draggable = false; // 配置後はドラッグ不可に
-                    // draggedCardElement.style.cursor = 'default';
-                    currentScore++;
-                    updateScoreDisplay();
-                    console.log('Correct!');
+        console.log('Drop:', draggedCardElement.id, `(${droppedCardRomaji}/${droppedCardDevanagari})`, 'on cell:', targetCellId);
 
-                    if (currentScore === totalCards && totalCards > 0) {
-                        setTimeout(() => {
-                            alert("素晴らしい！全問正解です！");
-                        }, 100);
-                    }
-                } else {
-                    console.log('Cell is already occupied. Card returned to cards area.');
-                    // セルが既に埋まっていたら、カードをカードエリアに戻す (実際には何もしなければ元の位置に留まるか、dragendで戻す)
-                    // 強制的にカードエリアに戻すなら:
-                    // if (cardsArea) cardsArea.appendChild(draggedCardElement);
-                }
-            } else {
-                // 不正解の場合
-                console.log('Incorrect cell! Card should go to', draggedCardElement.dataset.correctCell, '. Card returned to cards area.');
-                // 不正解ならカードをカードエリアに戻す (実際には何もしなければ元の位置に留まるか、dragendで戻す)
-                // 強制的にカードエリアに戻すなら:
-                // if (cardsArea) cardsArea.appendChild(draggedCardElement);
+        // このtargetCellIdに対して、droppedCardのテキスト(ローマ字またはデーヴァナーガリー)が正解となる定義があるか確認
+        let isCorrectPlacement = false;
+        // marutCardsDataをループして、targetCellIdにこのカードのテキストが対応する定義があるかチェック
+        for (const cardDef of marutCardsData) {
+            if (cardDef.correctCell === targetCellId &&
+                (cardDef.romaji === droppedCardRomaji || cardDef.devanagari === droppedCardDevanagari) ) {
+                isCorrectPlacement = true;
+                break;
             }
         }
-        draggedCardElement = null; // ドロップ処理が終わったらクリア
-    }
 
+        if (isCorrectPlacement) {
+            // 正解の場合
+            if (targetCell.children.length === 0) { // セルが空の場合のみ配置
+                targetCell.appendChild(draggedCardElement); // ★実際にドラッグされたカードを移動
+                currentScore++;
+                updateScoreDisplay();
+                console.log('Correct!');
+
+                if (currentScore === totalCards && totalCards > 0) {
+                    setTimeout(() => {
+                        alert("素晴らしい！全問正解です！");
+                    }, 100);
+                }
+            } else {
+                console.log('Cell is already occupied. Card returned to cards area.');
+                if (cardsArea) cardsArea.appendChild(draggedCardElement); // 元の場所に戻す
+            }
+        } else {
+            // 不正解の場合
+            console.log('Incorrect placement! This card does not belong here. Card returned to cards area.');
+            if (cardsArea) cardsArea.appendChild(draggedCardElement); // 元の場所に戻す
+        }
+    }
+    draggedCardElement = null;
+}
     dropzones.forEach(zone => {
         zone.addEventListener('dragover', handleDragOver);
         zone.addEventListener('drop', handleDrop);
