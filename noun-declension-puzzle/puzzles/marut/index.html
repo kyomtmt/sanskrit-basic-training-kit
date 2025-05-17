@@ -196,18 +196,40 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (targetCell.children.length === 0) {
                     targetCell.appendChild(draggedCardElement);
                     draggedCardElement.classList.add('placed-correctly');
+                    draggedCardElement.draggable = false; // 任意で追加
+                    draggedCardElement.style.cursor = 'default'; // 任意で追加
                     // ★配置されたカードのテキストも currentScriptMode に応じて再設定 (必須ではないが見た目の一貫性のため)★
-                    // draggedCardElement.textContent = (currentScriptMode === 'devanagari') ? matchingCardDef.devanagari : matchingCardDef.romaji;
+                    draggedCardElement.textContent = (currentScriptMode === 'devanagari') ? matchingCardDef.devanagari : matchingCardDef.romaji;
 
+        // --- ここからが console.log を追加する部分 ---
+        console.log("--- Before Text Update ---");
+        console.log("currentScriptMode:", currentScriptMode);
+        console.log("matchingCardDef.devanagari:", matchingCardDef.devanagari);
+        console.log("matchingCardDef.romaji:", matchingCardDef.romaji);
+        console.log("draggedCardElement.textContent (before):", draggedCardElement.textContent);
 
+        // ★★★ 実際にテキストを更新する行 ★★★
+        draggedCardElement.textContent = (currentScriptMode === 'devanagari') ? matchingCardDef.devanagari : matchingCardDef.romaji;
+
+        console.log("--- After Text Update ---");
+        console.log("draggedCardElement.textContent (after):", draggedCardElement.textContent);
+        // --- ここまでが console.log を追加する部分 ---
+                    
                     currentScore++;
                     updateScoreDisplay();
                     console.log('Correct! Placed card:', draggedCardElement.id, 'matching definition:', matchingCardDef.id);
 
-                    if (currentScore === totalCards && totalCards > 0) { /* ... */ }
-                } else { /* ... */ }
-            } else { /* ... */ }
+        if (currentScore === totalCards && totalCards > 0) {
+            // ... (クリア処理) ...
         }
+    } else {
+        console.log('Cell already occupied:', targetCell.id);
+        // 必要ならカードをカードエリアに戻す処理
+    }
+} else {
+    console.log('Incorrect placement. Card Romaji:', draggedCardElement.dataset.romaji, 'Target Cell:', targetCell.id); // dataset.romaji を使うように修正
+    // 必要ならカードをカードエリアに戻す処理
+}
         draggedCardElement = null;
     }
 
