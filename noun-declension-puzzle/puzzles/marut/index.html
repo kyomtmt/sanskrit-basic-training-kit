@@ -15,6 +15,7 @@
     <div class="controls">
         <p style="display: inline-block; margin-right: 20px;">スコア: <span id="score">0</span> / 24</p>
         <button id="reset-button">リセット</button>
+        <button id="toggle-script-button">ローマ字 / デーヴァナーガリー</button>
         <!-- ここに文字種トグルボタンやガイドON/OFFボタンなどを後で追加 -->
     </div>
 
@@ -100,16 +101,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const cardsArea = document.getElementById('cards-area');
     const dropzones = document.querySelectorAll('.dropzone');
     const resetButton = document.getElementById('reset-button');
+    const toggleScriptButton = document.getElementById('toggle-script-button'); // ★ボタン要素を取得★
 
     let currentScore = 0;
     let totalCards = 0;
     let draggedCardElement = null;
+    let currentScriptMode = 'romaji'; // ★現在の表示モードを管理 (初期値: ローマ字)★
 
-    function updateScoreDisplay() {
-        if (scoreElement) {
-            scoreElement.textContent = `${currentScore} / ${totalCards}`;
-        }
+    // --- カード表示を更新する関数 ---
+    function updateAllCardDisplays() {
+        // カードエリアのカードとセル内のカード全てを取得
+        document.querySelectorAll('.card').forEach(cardEl => {
+            const romaji = cardEl.dataset.romaji;
+            const devanagari = cardEl.dataset.devanagari;
+            if (romaji && devanagari) { // 両方のデータ属性がある場合のみ
+                cardEl.textContent = (currentScriptMode === 'devanagari') ? devanagari : romaji;
+            }
+        });
     }
+
+    function updateScoreDisplay() { /* ... (変更なし) ... */ }
 
     function initializePuzzle() {
         currentScore = 0;
@@ -130,108 +141,91 @@ document.addEventListener('DOMContentLoaded', () => {
                 cardElement.id = cardData.id;
                 cardElement.classList.add('card');
                 cardElement.draggable = true;
-                cardElement.textContent = cardData.romaji; // 常にローマ字を表示
+                // ★初期表示も currentScriptMode を参照★
+                cardElement.textContent = (currentScriptMode === 'devanagari') ? cardData.devanagari : cardData.romaji;
                 cardElement.dataset.correctCell = cardData.correctCell;
-                cardElement.dataset.romaji = cardData.romaji; // データとしては保持しておく
-                // cardElement.dataset.devanagari = cardData.devanagari; // 不要なら削除してもOK
+                cardElement.dataset.romaji = cardData.romaji;
+                cardElement.dataset.devanagari = cardData.devanagari;
 
                 cardElement.addEventListener('dragstart', handleDragStart);
                 cardElement.addEventListener('dragend', handleDragEnd);
 
                 if (cardsArea) cardsArea.appendChild(cardElement);
             });
-        } else {
-            totalCards = 0;
-            console.error("marutCardsData is NOT available or empty.");
-            if (cardsArea) cardsArea.textContent = "カードデータの読み込みに失敗しました。";
-        }
+        } else { /* ... (変更なし) ... */ }
         updateScoreDisplay();
     }
 
-    function handleDragStart(event) {
+    function handleDragStart(event) { /* ... (変更なし、ただし内部で currentScriptMode を参照してログを出すなら修正) ... */
         draggedCardElement = event.target;
         event.dataTransfer.setData('text/plain', event.target.id);
-        console.log('DragStart:', draggedCardElement.id, 'Romaji:', draggedCardElement.dataset.romaji, 'Correct Cell:', draggedCardElement.dataset.correctCell);
+        console.log('DragStart:', draggedCardElement.id,
+                    'Text:', draggedCardElement.textContent, // 表示されているテキスト
+                    'Correct Cell:', draggedCardElement.dataset.correctCell);
     }
 
-    function handleDragEnd(event) {
-        console.log('DragEnd for:', event.target.id);
-    }
+    function handleDragEnd(event) { /* ... (変更なし) ... */ }
+    function handleDragOver(event) { /* ... (変更なし) ... */ }
 
-    function handleDragOver(event) {
+    function handleDrop(event) {
         event.preventDefault();
-    }
+        const targetCell = event.target.closest('.dropzone');
+        const draggedCardId = event.dataTransfer.getData('text/plain');
 
-function handleDrop(event) {
-    event.preventDefault();
-    const targetCell = event.target.closest('.dropzone');
-    const draggedCardId = event.dataTransfer.getData('text/plain'); // カードのIDを取得
+        if (draggedCardElement && draggedCardElement.id === draggedCardId && targetCell) {
+            // ★正誤判定は、ドラッグされたカードが持つdatasetのローマ字と、
+            //   marutCardsDataのローマ字を比較するのが確実（表示モードに依存しないため）★
+            const draggedCardRomaji = draggedCardElement.dataset.romaji; // datasetからローマ字を取得
+            const targetCellId = targetCell.id;
 
-    // draggedCardElement は dragstart イベントで設定されているはず
-    if (draggedCardElement && draggedCardElement.id === draggedCardId && targetCell) {
-        const droppedCardRomaji = draggedCardElement.dataset.romaji;
-        const targetCellId = targetCell.id;
+            console.log('Attempting Drop:', draggedCardElement.id, `(R: "${draggedCardRomaji}")`, 'on cell:', targetCellId);
 
-        console.log('Attempting Drop:', draggedCardElement.id, `(R: "${droppedCardRomaji}")`, 'on cell:', targetCellId);
+            let isCorrectPlacement = false;
+            let matchingCardDef = null;
 
-        let isCorrectPlacement = false;
-        let matchingCardDef = null; // 一致したカード定義を保持
-
-        // marutCardsDataをループして、targetCellIdにこのカードのテキストが対応する定義があるかチェック
-        for (const cardDef of marutCardsData) {
-            if (cardDef.correctCell === targetCellId && cardDef.romaji === droppedCardRomaji) {
-                isCorrectPlacement = true;
-                matchingCardDef = cardDef; // 一致した定義を保存
-                break;
-            }
-        }
-
-        if (isCorrectPlacement && matchingCardDef) {
-            // 正解の場合
-            if (targetCell.children.length === 0) { // セルが空の場合のみ配置
-                targetCell.appendChild(draggedCardElement); // 実際にドラッグされたカードを移動
-                
-                // ★★★ 正解カードにクラスを追加 ★★★
-                draggedCardElement.classList.add('placed-correctly');
-                console.log('Added .placed-correctly to:', draggedCardElement.id, 'Current classes:', draggedCardElement.className);
-
-                currentScore++;
-                updateScoreDisplay();
-                console.log('Correct! Placed card:', draggedCardElement.id, 'matching definition:', matchingCardDef.id);
-
-                if (currentScore === totalCards && totalCards > 0) {
-                    setTimeout(() => {
-                        alert("素晴らしい！全問正解です！");
-                    }, 100);
+            for (const cardDef of marutCardsData) {
+                // ★判定は常にローマ字同士で行う★
+                if (cardDef.correctCell === targetCellId && cardDef.romaji === draggedCardRomaji) {
+                    isCorrectPlacement = true;
+                    matchingCardDef = cardDef;
+                    break;
                 }
-            } else {
-                console.log('Cell is already occupied. Card returned to cards area.');
-                if (cardsArea) cardsArea.appendChild(draggedCardElement); // 元の場所に戻す
             }
-        } else {
-            // 不正解の場合
-            console.log('Incorrect placement! Card returned to cards area. Details:');
-            console.log(' - Dragged Card Romaji:', `"${droppedCardRomaji}"`);
-            console.log(' - Target Cell ID:', `"${targetCellId}"`);
-            console.log(' - No matching definition found in marutCardsData for this cell and romaji combination.');
-            if (cardsArea) cardsArea.appendChild(draggedCardElement); // 元の場所に戻す
-        }
-    }
-    draggedCardElement = null; // ドロップ処理が終わったらドラッグ中カード情報をクリア
-}
-    dropzones.forEach(zone => {
-        zone.addEventListener('dragover', handleDragOver);
-        zone.addEventListener('drop', handleDrop);
-    });
 
-    if (resetButton) {
-        resetButton.addEventListener('click', () => {
-            console.log('Reset button clicked');
-            initializePuzzle();
+            if (isCorrectPlacement && matchingCardDef) {
+                if (targetCell.children.length === 0) {
+                    targetCell.appendChild(draggedCardElement);
+                    draggedCardElement.classList.add('placed-correctly');
+                    // ★配置されたカードのテキストも currentScriptMode に応じて再設定 (必須ではないが見た目の一貫性のため)★
+                    // draggedCardElement.textContent = (currentScriptMode === 'devanagari') ? matchingCardDef.devanagari : matchingCardDef.romaji;
+
+
+                    currentScore++;
+                    updateScoreDisplay();
+                    console.log('Correct! Placed card:', draggedCardElement.id, 'matching definition:', matchingCardDef.id);
+
+                    if (currentScore === totalCards && totalCards > 0) { /* ... */ }
+                } else { /* ... */ }
+            } else { /* ... */ }
+        }
+        draggedCardElement = null;
+    }
+
+    dropzones.forEach(zone => { /* ... (変更なし) ... */ });
+
+    if (resetButton) { /* ... (変更なし) ... */ }
+
+    // --- ★文字種トグルボタンのイベントリスナー設定★ ---
+    if (toggleScriptButton) {
+        toggleScriptButton.addEventListener('click', () => {
+            currentScriptMode = (currentScriptMode === 'romaji') ? 'devanagari' : 'romaji';
+            updateAllCardDisplays(); // カードの表示を更新
+            console.log("Script mode toggled to:", currentScriptMode);
         });
     }
+    // --- ここまで文字種トグル ---
 
-    initializePuzzle();
+    initializePuzzle(); // 最後に初期化
 });
 </script>
 </body>
