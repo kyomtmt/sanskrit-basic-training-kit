@@ -225,57 +225,59 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
     }
 
-    function handleDrop(event) {
-        event.preventDefault();
-        const targetCell = event.target.closest('.dropzone');
-        const draggedCardId = event.dataTransfer.getData('text/plain');
-        const currentDraggedCardElement = document.getElementById(draggedCardId); // Get the dragged card
+function handleDrop(event) {
+    event.preventDefault();
+    const targetCell = event.target.closest('.dropzone');
+    const draggedCardId = event.dataTransfer.getData('text/plain');
+    const currentDraggedCardElement = document.getElementById(draggedCardId);
 
-        if (currentDraggedCardElement && targetCell) {
-            const cardDefinition = cardDataSource.find(card => card.id === draggedCardId);
+    // ★★★ デバッグ用 console.log を追加 ★★★
+    console.log("--- Drop Event ---");
+    console.log("Target Cell ID:", targetCell ? targetCell.id : "null");
+    console.log("Dragged Card ID:", draggedCardId);
+    console.log("Dragged Card Element:", currentDraggedCardElement);
 
-            let isCorrectPlacement = false;
-            if (cardDefinition && cardDefinition.correctCell === targetCell.id) {
-                 isCorrectPlacement = true;
-            }
-            // Special handling for V.sg. if multiple cards could fit, but for now 1-to-1
-            // Example for Vocative Singular (if we had two card options like "-(stem)" and "=N.")
-            // if (targetCell.id === "cell-voc-sg" && (cardDefinition.id === "mf-voc-sg-stem" || cardDefinition.id === "mf-voc-sg-eq-nom")) {
-            //    isCorrectPlacement = true;
-            // }
+    if (currentDraggedCardElement && targetCell) {
+        const cardDefinition = cardDataSource.find(card => card.id === draggedCardId);
 
+        // ★★★ デバッグ用 console.log を追加 ★★★
+        console.log("Found Card Definition in cardDataSource:", cardDefinition);
 
-            if (isCorrectPlacement) {
-                if (targetCell.children.length === 0) { // Cell is empty
-                    targetCell.appendChild(currentDraggedCardElement);
-                    currentDraggedCardElement.classList.add('placed-correctly');
-                    currentDraggedCardElement.draggable = false; // Make it non-draggable once placed
+        let isCorrectPlacement = false;
+        if (cardDefinition) {
+            console.log("Card Definition acceptableCells:", cardDefinition.acceptableCells); // ★デバッグ
+            console.log("Card Definition romaji:", cardDefinition.romaji); // ★デバッグ
 
-                    currentScore++;
-                    updateScoreDisplay();
-                    // console.log('Correct! Placed card:', currentDraggedCardElement.id, 'on cell:', targetCell.id);
-
-                    // Display rule explanations
-                    if (cardDefinition.relatedRuleIds) {
-                        displayRuleExplanations(cardDefinition.relatedRuleIds);
-                    }
-
-                    if (currentScore === totalCards && totalCards > 0) {
-                        setTimeout(() => {
-                            alert("素晴らしい！全問正解です！");
-                        }, 100);
-                    }
-                } else {
-                    // console.log('Cell is already occupied. Card returned to cards area.');
-                    if (cardsArea) cardsArea.appendChild(currentDraggedCardElement); // Return to card pool
-                }
+            if (cardDefinition.acceptableCells && cardDefinition.acceptableCells.includes(targetCell.id)) {
+                isCorrectPlacement = true;
+                console.log("Placement considered CORRECT based on acceptableCells."); // ★デバッグ
+            } else if (!cardDefinition.acceptableCells && cardDefinition.correctCell === targetCell.id) {
+                // この分岐は mfEndingCardsData では使われないはず (全て acceptableCells を持つ想定)
+                isCorrectPlacement = true;
+                console.log("Placement considered CORRECT based on correctCell (fallback)."); // ★デバッグ
             } else {
-                // console.log('Incorrect placement! Card returned to cards area.');
-                if (cardsArea) cardsArea.appendChild(currentDraggedCardElement); // Return to card pool
+                console.log("Placement considered INCORRECT."); // ★デバッグ
+                console.log("  - Target Cell ID:", targetCell.id);
+                console.log("  - Acceptable Cells:", cardDefinition.acceptableCells);
             }
+        } else {
+            console.log("No cardDefinition found for ID:", draggedCardId); // ★デバッグ
         }
-        draggedCardElement = null;
+
+        if (isCorrectPlacement) {
+            // ... (正解処理) ...
+            console.log("Correct placement confirmed. Proceeding to place card."); // ★デバッグ
+        } else {
+            // ... (不正解処理) ...
+            console.log("Incorrect placement confirmed or no card definition. Returning card."); // ★デバッグ
+            if (cardsArea && currentDraggedCardElement) cardsArea.appendChild(currentDraggedCardElement);
+        }
+    } else {
+        console.log("Either currentDraggedCardElement or targetCell is null."); // ★デバッグ
+        if (currentDraggedCardElement && cardsArea) cardsArea.appendChild(currentDraggedCardElement); // ドラッグ要素があれば戻す
     }
+    draggedCardElement = null; // これはグローバル変数なので、クリアするなら dragend の方が適切
+}
 
     function displayRuleExplanations(ruleIds) {
         if (!ruleExplanationContainer || !ruleExplanationContent || !rulesDataSource) {
