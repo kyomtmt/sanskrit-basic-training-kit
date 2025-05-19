@@ -242,28 +242,40 @@ function handleDrop(event) {
 
         // ★★★ デバッグ用 console.log を追加 ★★★
         console.log("Found Card Definition in cardDataSource:", cardDefinition);
+            // isCorrectPlacement の決定部分を置き換える
+            let isCorrectPlacement = false; // 先に false で初期化
+            if (cardDefinition) {
+                console.log("Card Definition acceptableCells:", cardDefinition.acceptableCells);
+                console.log("Card Definition romaji:", cardDefinition.romaji);
+                console.log("Target Cell ID for comparison:", `"${targetCell.id}"`); // 比較直前の値を""で囲んで表示
 
-        let isCorrectPlacement = false;
-        if (cardDefinition) {
-            console.log("Card Definition acceptableCells:", cardDefinition.acceptableCells); // ★デバッグ
-            console.log("Card Definition romaji:", cardDefinition.romaji); // ★デバッグ
+                if (cardDefinition.acceptableCells) {
+                    for (let i = 0; i < cardDefinition.acceptableCells.length; i++) {
+                        const acceptableCell = cardDefinition.acceptableCells[i];
+                        console.log(`Comparing: "${targetCell.id}" (length: ${targetCell.id.length}) with "${acceptableCell}" (length: ${acceptableCell.length})`); // ★各比較と長さを表示
+                        if (acceptableCell === targetCell.id) {
+                            isCorrectPlacement = true;
+                            console.log("Match found! Placement considered CORRECT based on acceptableCells.");
+                            break; 
+                        }
+                    }
+                }
+                
+                // Fallback (もしacceptableCellsがない場合、または上記で見つからなかった場合)
+                // この部分は今回の mfEndingCardsData では通常通らないはず
+                if (!isCorrectPlacement && cardDefinition.hasOwnProperty('correctCell') && !cardDefinition.acceptableCells && cardDefinition.correctCell === targetCell.id) {
+                    isCorrectPlacement = true;
+                    console.log("Placement considered CORRECT based on correctCell (fallback).");
+                }
 
-            if (cardDefinition.acceptableCells && cardDefinition.acceptableCells.includes(targetCell.id)) {
-                isCorrectPlacement = true;
-                console.log("Placement considered CORRECT based on acceptableCells."); // ★デバッグ
-            } else if (!cardDefinition.acceptableCells && cardDefinition.correctCell === targetCell.id) {
-                // この分岐は mfEndingCardsData では使われないはず (全て acceptableCells を持つ想定)
-                isCorrectPlacement = true;
-                console.log("Placement considered CORRECT based on correctCell (fallback)."); // ★デバッグ
+                if (!isCorrectPlacement) { // 上記のいずれでも true にならなかった場合
+                    console.log("Placement considered INCORRECT.");
+                    console.log("  - Target Cell ID:", `"${targetCell.id}"`);
+                    console.log("  - Acceptable Cells array:", cardDefinition.acceptableCells);
+                }
             } else {
-                console.log("Placement considered INCORRECT."); // ★デバッグ
-                console.log("  - Target Cell ID:", targetCell.id);
-                console.log("  - Acceptable Cells:", cardDefinition.acceptableCells);
+                console.log("No cardDefinition found for ID:", draggedCardId);
             }
-        } else {
-            console.log("No cardDefinition found for ID:", draggedCardId); // ★デバッグ
-        }
-
         if (isCorrectPlacement) {
             // ... (正解処理) ...
             console.log("Correct placement confirmed. Proceeding to place card."); // ★デバッグ
