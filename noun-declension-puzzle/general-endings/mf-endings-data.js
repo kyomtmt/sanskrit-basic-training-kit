@@ -4,41 +4,155 @@
 const declensionPuzzleTitle = "名詞の格語尾パズル：男性・女性";
 const declensionPuzzleDescription = "一般的な男性名詞・女性名詞の格語尾を正しい位置に配置してください。";
 
-// 男性・女性名詞の格語尾カードデータ
+// 男性・女性名詞の格語尾カードデータ (全24枚)
 const mfEndingCardsData = [
-    // Singular (単数) m./f.
-    { id: "mf-s-nom-sg", romaji: "-s", correctCell: "cell-nom-sg", relatedRuleIds: ["ending_s", "rule1_s_drop_consonant", "rule2_s_to_h_final"] },
-    { id: "mf-am-acc-sg", romaji: "-am", correctCell: "cell-acc-sg", relatedRuleIds: ["ending_am"] },
-    { id: "mf-aa-ins-sg", romaji: "-ā", correctCell: "cell-ins-sg", relatedRuleIds: ["ending_aa_long"] },
-    { id: "mf-e-dat-sg", romaji: "-e", correctCell: "cell-dat-sg", relatedRuleIds: ["ending_e_short"] },
-    { id: "mf-as-abl-sg", romaji: "-as", correctCell: "cell-abl-sg", relatedRuleIds: ["ending_as", "rule5_ab_g_sg_equal", "rule2_s_to_h_final"] },
-    { id: "mf-as-gen-sg", romaji: "-as", correctCell: "cell-gen-sg", relatedRuleIds: ["ending_as", "rule5_ab_g_sg_equal", "rule2_s_to_h_final"] },
-    { id: "mf-i-loc-sg", romaji: "-i", correctCell: "cell-loc-sg", relatedRuleIds: ["ending_i_short"] },
-    { // 単数呼格のカード (併記バージョン)
-        id: "mf-voc-sg-combined",
-        romaji: "語幹 / =N.", // 「― / =N.」でも良いですが、より分かりやすく
-        correctCell: "cell-voc-sg",
+    // Singular (単数) m./f. - 8枚
+    {
+        id: "mf-s-nom-sg", // 単数主格
+        romaji: "-s",
+        acceptableCells: ["cell-nom-sg"],
+        relatedRuleIds: ["ending_s", "rule1_s_drop_consonant", "rule2_s_to_h_final"]
+    },
+    {
+        id: "mf-am-acc-sg", // 単数対格
+        romaji: "-am",
+        acceptableCells: ["cell-acc-sg"],
+        relatedRuleIds: ["ending_am"]
+    },
+    {
+        id: "mf-aa-ins-sg", // 単数具格
+        romaji: "-ā",
+        acceptableCells: ["cell-ins-sg"],
+        relatedRuleIds: ["ending_aa_long"]
+    },
+    {
+        id: "mf-e-dat-sg", // 単数与格
+        romaji: "-e",
+        acceptableCells: ["cell-dat-sg"],
+        relatedRuleIds: ["ending_e_short"]
+    },
+    { // 単数奪格用 -as カード (1枚目)
+        id: "mf-as-abl-sg",
+        romaji: "-as",
+        acceptableCells: ["cell-abl-sg", "cell-gen-sg"], // 奪格・属格単数で共通
+        relatedRuleIds: ["ending_as", "rule5_ab_g_sg_equal", "rule2_s_to_h_final"]
+    },
+    { // 単数属格用 -as カード (2枚目)
+        id: "mf-as-gen-sg",
+        romaji: "-as",
+        acceptableCells: ["cell-abl-sg", "cell-gen-sg"], // 奪格・属格単数で共通
+        relatedRuleIds: ["ending_as", "rule5_ab_g_sg_equal", "rule2_s_to_h_final"]
+    },
+    {
+        id: "mf-i-loc-sg", // 単数処格
+        romaji: "-i",
+        acceptableCells: ["cell-loc-sg"],
+        relatedRuleIds: ["ending_i_short"]
+    },
+    {
+        id: "mf-voc-sg-combined", // 単数呼格
+        romaji: "語幹 / =N.",
+        acceptableCells: ["cell-voc-sg"],
         relatedRuleIds: ["voc_sg_combined_explanation_mf", "rule3_voc_equals_nom", "equals_nominative", "no_ending_stem_only"]
     },
 
-    // Dual (両数) m./f.
-    { id: "mf-au-nomaccvoc-du-1", romaji: "-au", correctCell: "cell-nom-du", relatedRuleIds: ["ending_au", "rule5_du_three_forms"] },
-    { id: "mf-au-nomaccvoc-du-2", romaji: "-au", correctCell: "cell-acc-du", relatedRuleIds: ["ending_au", "rule5_du_three_forms"] },
-    { id: "mf-au-nomaccvoc-du-3", romaji: "-au", correctCell: "cell-voc-du", relatedRuleIds: ["ending_au", "rule3_voc_equals_nom", "rule5_du_three_forms"] },
-    { id: "mf-bhyam-insdatabl-du-1", romaji: "-bhyām", correctCell: "cell-ins-du", relatedRuleIds: ["ending_bhyam", "rule7_pada_endings", "rule5_du_three_forms"] },
-    { id: "mf-bhyam-insdatabl-du-2", romaji: "-bhyām", correctCell: "cell-dat-du", relatedRuleIds: ["ending_bhyam", "rule7_pada_endings", "rule5_du_three_forms"] },
-    { id: "mf-bhyam-insdatabl-du-3", romaji: "-bhyām", correctCell: "cell-abl-du", relatedRuleIds: ["ending_bhyam", "rule7_pada_endings", "rule5_du_three_forms"] },
-    { id: "mf-os-genloc-du-1", romaji: "-os", correctCell: "cell-gen-du", relatedRuleIds: ["ending_os", "rule2_s_to_h_final", "rule5_du_three_forms"] },
-    { id: "mf-os-genloc-du-2", romaji: "-os", correctCell: "cell-loc-du", relatedRuleIds: ["ending_os", "rule2_s_to_h_final", "rule5_du_three_forms"] },
+    // Dual (両数) m./f. - 8枚
+    { // 両数主格用 -au カード (1枚目)
+        id: "mf-au-nom-du",
+        romaji: "-au",
+        acceptableCells: ["cell-nom-du", "cell-acc-du", "cell-voc-du"], // 主・対・呼 両数で共通
+        relatedRuleIds: ["ending_au", "rule5_du_three_forms", "rule3_voc_equals_nom"]
+    },
+    { // 両数対格用 -au カード (2枚目)
+        id: "mf-au-acc-du",
+        romaji: "-au",
+        acceptableCells: ["cell-nom-du", "cell-acc-du", "cell-voc-du"],
+        relatedRuleIds: ["ending_au", "rule5_du_three_forms", "rule3_voc_equals_nom"]
+    },
+    { // 両数呼格用 -au カード (3枚目)
+        id: "mf-au-voc-du",
+        romaji: "-au",
+        acceptableCells: ["cell-nom-du", "cell-acc-du", "cell-voc-du"],
+        relatedRuleIds: ["ending_au", "rule5_du_three_forms", "rule3_voc_equals_nom"]
+    },
+    { // 両数具格用 -bhyām カード (1枚目)
+        id: "mf-bhyam-ins-du",
+        romaji: "-bhyām",
+        acceptableCells: ["cell-ins-du", "cell-dat-du", "cell-abl-du"], // 具・与・奪 両数で共通
+        relatedRuleIds: ["ending_bhyam", "rule7_pada_endings", "rule5_du_three_forms"]
+    },
+    { // 両数与格用 -bhyām カード (2枚目)
+        id: "mf-bhyam-dat-du",
+        romaji: "-bhyām",
+        acceptableCells: ["cell-ins-du", "cell-dat-du", "cell-abl-du"],
+        relatedRuleIds: ["ending_bhyam", "rule7_pada_endings", "rule5_du_three_forms"]
+    },
+    { // 両数奪格用 -bhyām カード (3枚目)
+        id: "mf-bhyam-abl-du",
+        romaji: "-bhyām",
+        acceptableCells: ["cell-ins-du", "cell-dat-du", "cell-abl-du"],
+        relatedRuleIds: ["ending_bhyam", "rule7_pada_endings", "rule5_du_three_forms"]
+    },
+    { // 両数属格用 -os カード (1枚目)
+        id: "mf-os-gen-du",
+        romaji: "-os",
+        acceptableCells: ["cell-gen-du", "cell-loc-du"], // 属・処 両数で共通
+        relatedRuleIds: ["ending_os", "rule2_s_to_h_final", "rule5_du_three_forms"]
+    },
+    { // 両数処格用 -os カード (2枚目)
+        id: "mf-os-loc-du",
+        romaji: "-os",
+        acceptableCells: ["cell-gen-du", "cell-loc-du"],
+        relatedRuleIds: ["ending_os", "rule2_s_to_h_final", "rule5_du_three_forms"]
+    },
 
-    // Plural (複数) m./f.
-    { id: "mf-as-nomaccvoc-pl-1", romaji: "-as", correctCell: "cell-nom-pl", relatedRuleIds: ["ending_as", "rule2_s_to_h_final"] },
-    { id: "mf-as-nomaccvoc-pl-2", romaji: "-as", correctCell: "cell-acc-pl", relatedRuleIds: ["ending_as", "rule2_s_to_h_final"] },
-    { id: "mf-as-nomaccvoc-pl-3", romaji: "-as", correctCell: "cell-voc-pl", relatedRuleIds: ["ending_as", "rule3_voc_equals_nom", "rule2_s_to_h_final"] },
-    { id: "mf-bhis-ins-pl", romaji: "-bhis", correctCell: "cell-ins-pl", relatedRuleIds: ["ending_bhis", "rule7_pada_endings", "rule2_s_to_h_final"] },
-    { id: "mf-bhyas-databl-pl-1", romaji: "-bhyas", correctCell: "cell-dat-pl", relatedRuleIds: ["ending_bhyas", "rule7_pada_endings", "rule5_d_ab_pl_equal", "rule2_s_to_h_final"] },
-    { id: "mf-bhyas-databl-pl-2", romaji: "-bhyas", correctCell: "cell-abl-pl", relatedRuleIds: ["ending_bhyas", "rule7_pada_endings", "rule5_d_ab_pl_equal", "rule2_s_to_h_final"] },
-    { id: "mf-aam-gen-pl", romaji: "-ām", correctCell: "cell-gen-pl", relatedRuleIds: ["ending_aam_long"] },
-    { id: "mf-su-loc-pl", romaji: "-su", correctCell: "cell-loc-pl", relatedRuleIds: ["ending_su", "rule7_pada_endings"] }
+    // Plural (複数) m./f. - 8枚
+    { // 複数主格用 -as カード (1枚目)
+        id: "mf-as-nom-pl",
+        romaji: "-as",
+        acceptableCells: ["cell-nom-pl", "cell-acc-pl", "cell-voc-pl"], // 主・対・呼 複数で共通
+        relatedRuleIds: ["ending_as", "rule2_s_to_h_final", "rule3_voc_equals_nom"]
+    },
+    { // 複数対格用 -as カード (2枚目)
+        id: "mf-as-acc-pl",
+        romaji: "-as",
+        acceptableCells: ["cell-nom-pl", "cell-acc-pl", "cell-voc-pl"],
+        relatedRuleIds: ["ending_as", "rule2_s_to_h_final", "rule3_voc_equals_nom"]
+    },
+    { // 複数呼格用 -as カード (3枚目)
+        id: "mf-as-voc-pl",
+        romaji: "-as",
+        acceptableCells: ["cell-nom-pl", "cell-acc-pl", "cell-voc-pl"],
+        relatedRuleIds: ["ending_as", "rule2_s_to_h_final", "rule3_voc_equals_nom"]
+    },
+    {
+        id: "mf-bhis-ins-pl", // 複数具格
+        romaji: "-bhis",
+        acceptableCells: ["cell-ins-pl"],
+        relatedRuleIds: ["ending_bhis", "rule7_pada_endings", "rule2_s_to_h_final"]
+    },
+    { // 複数与格用 -bhyas カード (1枚目)
+        id: "mf-bhyas-dat-pl",
+        romaji: "-bhyas",
+        acceptableCells: ["cell-dat-pl", "cell-abl-pl"], // 与・奪 複数で共通
+        relatedRuleIds: ["ending_bhyas", "rule7_pada_endings", "rule5_d_ab_pl_equal", "rule2_s_to_h_final"]
+    },
+    { // 複数奪格用 -bhyas カード (2枚目)
+        id: "mf-bhyas-abl-pl",
+        romaji: "-bhyas",
+        acceptableCells: ["cell-dat-pl", "cell-abl-pl"],
+        relatedRuleIds: ["ending_bhyas", "rule7_pada_endings", "rule5_d_ab_pl_equal", "rule2_s_to_h_final"]
+    },
+    {
+        id: "mf-aam-gen-pl", // 複数属格
+        romaji: "-ām",
+        acceptableCells: ["cell-gen-pl"],
+        relatedRuleIds: ["ending_aam_long"]
+    },
+    {
+        id: "mf-su-loc-pl", // 複数処格
+        romaji: "-su",
+        acceptableCells: ["cell-loc-pl"],
+        relatedRuleIds: ["ending_su", "rule7_pada_endings"]
+    }
 ];
-// Total 24 cards
