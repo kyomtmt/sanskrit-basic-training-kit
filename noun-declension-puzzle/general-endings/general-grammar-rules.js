@@ -81,6 +81,12 @@ const generalGrammarRuleExplanations = {
     },
 
     // ----- その他の補助的な解説 -----
-    "equals_nominative": { /* ... (既存のまま) ... */ },
-    "no_ending_stem_only": { /* ... (既存のまま、n_sg_nav_details で具体的に説明) ... */ }
-};
+    "equals_nominative": {
+        title: "語形: 主格と同形 (=N.)",
+        text: "「=N.」は、その格・数・性の形が、対応する主格(Nominative)と同じであることを示します。ただし、サンディによる微妙な変化 (例: ヴィサルガの有無) は別途考慮が必要です。"
+    },
+    "no_ending_stem_only": {
+        title: "語形: 語尾なし (語幹のみ)",
+        text: "「語幹」または表中の「―」(棒線)は、その格・数では特定の語尾が付かず、名詞の語幹がそのままの形で用いられることを示します。中性名詞の単数主格・対格・呼格 (a語幹を除く) が代表的な例です。"
+    }
+}; // generalGrammarRuleExplanations オブジェクトをここで閉じる
