@@ -4,55 +4,123 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>名詞活用パズル - メニュー</title>
-    <link rel="stylesheet" href="../common/style.css">
+    <!-- common/style.css へのパスを確認 -->
+    <link rel="stylesheet" href="common/style.css"> <!-- ★修正: このHTMLファイルはnoun-declension-puzzle直下なので、../ は不要 -->
     <style>
-        body { text-align: center; }
-        ul { list-style: none; padding: 0; }
-        li { margin: 15px 0; }
-        a { /* 通常のパズル選択ボタンのスタイル */
-            text-decoration: none;
-            font-size: 1.2em;
-            color: white;
-            background-color: #007bff;
-            padding: 12px 20px;
-            border-radius: 8px;
-            display: inline-block;
-            width: 320px; /* ボタン幅を統一 (調整してください) */
-            box-sizing: border-box;
-            transition: background-color 0.2s ease;
+        body {
+            text-align: center;
+            font-family: sans-serif; /* 基本的なフォントファミリーを指定 */
+            padding: 20px;
+            background-color: #f8f9fa; /* 少し明るい背景色 */
         }
-        a:hover {
+        h1 {
+            color: #343a40; /* 見出しの色 */
+            margin-bottom: 10px;
+        }
+        p.description { /* 「挑戦したい名詞を選んでください」のテキスト用 */
+            color: #495057;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 auto; /* ul自体を中央寄せ */
+            max-width: 500px; /* ボタンリストの最大幅 */
+        }
+        li {
+            margin: 12px 0;
+        }
+        a.puzzle-select-button { /* 全てのパズル選択ボタン共通のクラス */
+            text-decoration: none;
+            font-size: 1.1em; /* 少し小さく調整 */
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px; /* 少し角を丸く */
+            display: block; /* ブロック要素にして幅を100%に */
+            width: 100%;    /* li の幅いっぱいに広がる */
+            box-sizing: border-box;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.07);
+        }
+        a.puzzle-select-button:hover {
+            transform: translateY(-2px); /* ホバー時に少し浮き上がる効果 */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        /* 具体的な名詞パズル用ボタンのスタイル */
+        a.specific-noun-button {
+            background-color: #007bff; /* 青色 */
+        }
+        a.specific-noun-button:hover {
             background-color: #0056b3;
         }
 
-        a.back-to-main-menu { /* 「全体メニューに戻る」ボタン専用スタイル */
+        /* ★★★ 一般的な格語尾パズル用ボタンの新しいスタイル ★★★ */
+        a.general-ending-button {
+            background-color: #28a745; /* 緑色 */
+        }
+        a.general-ending-button:hover {
+            background-color: #1e7e34;
+        }
+
+        /* 「全体メニューに戻る」ボタン専用スタイル */
+        a.back-to-main-menu {
             background-color: #6c757d; /* グレー系 */
-            margin-top: 25px; /* 上のリストとの間隔を少し空ける */
+            margin-top: 30px;
+            display: inline-block; /* 幅を内容に合わせる */
+            width: auto; /* 自動幅 */
+            padding: 10px 25px;
         }
         a.back-to-main-menu:hover {
             background-color: #5a6268;
         }
+
+        /* 格語尾パズルのセクション見出し */
+        h2.section-title {
+            margin-top: 40px;
+            margin-bottom: 15px;
+            color: #495057;
+            font-size: 1.3em;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 5px;
+            display: inline-block; /* 下線が文字幅に合うように */
+        }
+
     </style>
 </head>
 <body>
     <h1>名詞活用パズル</h1>
-    <p>挑戦したい名詞を選んでください。</p>
+    <p class="description">挑戦したい名詞またはルールを選んでください。</p>
+
+    <h2 class="section-title">具体的な名詞の活用</h2>
     <ul>
-        <li><a href="puzzles/marut/">marut (風) - 男性名詞</a></li>
-        <li><a href="puzzles/jagat/">jagat (世界) - 中性名詞</a></li>
-        <li><a href="puzzles/sarit/">sarit (川) - 女性名詞</a></li>
-        <li><a href="puzzles/vac/">vāc (言葉) - 女性名詞</a></li>
-        <li><a href="puzzles/tapasvin/">tapasvin (苦行者) - 男性名詞</a></li>
-        <li><a href="puzzles/manas/">manas (心) - 中性名詞</a></li>
-        <li><a href="puzzles/apsaras/">apsaras (天女) - 女性名詞</a></li>
-        <li><a href="puzzles/agnimat/">agnimat (火をもつ) - 男性名詞</a></li>
-        <li><a href="puzzles/tudat-m/">tudat (打つ) - 男性名詞</a></li>
-        <li><a href="puzzles/tudat-n/">tudat (打つ) - 中性名詞</a></li>
-        <li><a href="puzzles/brahman-m/">brahman (梵天) - 男性名詞</a></li>
-        <li><a href="puzzles/brahman-n/">brahman (梵) - 中性名詞</a></li>
-        <li><a href="puzzles/atman/">ātman (魂、自己、自我) - 男性名詞</a></li>
+        <li><a href="puzzles/marut/marut.html" class="puzzle-select-button specific-noun-button">marut (風) - 男性名詞</a></li>
+        <li><a href="puzzles/jagat/jagat.html" class="puzzle-select-button specific-noun-button">jagat (世界) - 中性名詞</a></li>
+        <li><a href="puzzles/sarit/sarit.html" class="puzzle-select-button specific-noun-button">sarit (川) - 女性名詞</a></li>
+        <li><a href="puzzles/vac/vac.html" class="puzzle-select-button specific-noun-button">vāc (言葉) - 女性名詞</a></li>
+        <li><a href="puzzles/tapasvin/tapasvin.html" class="puzzle-select-button specific-noun-button">tapasvin (苦行者) - 男性名詞</a></li>
+        <li><a href="puzzles/manas/manas.html" class="puzzle-select-button specific-noun-button">manas (心) - 中性名詞</a></li>
+        <li><a href="puzzles/apsaras/apsaras.html" class="puzzle-select-button specific-noun-button">apsaras (天女) - 女性名詞</a></li>
+        <li><a href="puzzles/agnimat/agnimat.html" class="puzzle-select-button specific-noun-button">agnimat (火をもつ) - 男性名詞</a></li>
+        <li><a href="puzzles/tudat-m/tudat-m.html" class="puzzle-select-button specific-noun-button">tudat (打つ) - 男性名詞</a></li> <!-- ★パスを修正 (フォルダ名/ファイル名) -->
+        <li><a href="puzzles/tudat-n/tudat-n.html" class="puzzle-select-button specific-noun-button">tudat (打つ) - 中性名詞</a></li> <!-- ★パスを修正 -->
+        <li><a href="puzzles/brahman-m/brahman-m.html" class="puzzle-select-button specific-noun-button">brahman (梵天) - 男性名詞</a></li> <!-- ★パスを修正 -->
+        <li><a href="puzzles/brahman-n/brahman-n.html" class="puzzle-select-button specific-noun-button">brahman (梵) - 中性名詞</a></li> <!-- ★パスを修正 -->
+        <li><a href="puzzles/atman/atman.html" class="puzzle-select-button specific-noun-button">ātman (魂、自己、自我) - 男性名詞</a></li>
     </ul>
-    <p><a href="../index.html" class="back-to-main-menu">全体メニューに戻る</a></p>
-    <script src="../common/script.js"></script>
+
+    <!-- ★★★ ここに新しい格語尾パズルのセクションを追加 ★★★ -->
+    <h2 class="section-title">一般的な格語尾の学習</h2>
+    <ul>
+        <li><a href="general-endings/mf-endings-puzzle.html" class="puzzle-select-button general-ending-button">格語尾パズル (男性・女性)</a></li>
+        <!-- 中性名詞パズルができたらここに追加 -->
+        <!-- <li><a href="general-endings/n-endings-puzzle.html" class="puzzle-select-button general-ending-button">格語尾パズル (中性)</a></li> -->
+    </ul>
+
+    <p><a href="../index.html" class="puzzle-select-button back-to-main-menu">全体メニューに戻る</a></p>
+
+    <!-- script.js のパスも確認 -->
+    <!-- <script src="common/script.js"></script> --> <!-- ★修正: このHTMLファイルはnoun-declension-puzzle直下なので、../ は不要 -->
 </body>
 </html>
