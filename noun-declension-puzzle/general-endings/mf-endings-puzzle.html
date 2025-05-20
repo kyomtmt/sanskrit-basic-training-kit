@@ -229,9 +229,8 @@ function handleDrop(event) {
     event.preventDefault();
     const targetCell = event.target.closest('.dropzone');
     const draggedCardId = event.dataTransfer.getData('text/plain');
-    const currentDraggedCardElement = document.getElementById(draggedCardId);
+    const currentDraggedCardElement = document.getElementById(draggedCardId); // あなたの取得方法
 
-    // ★★★ デバッグ用 console.log を追加 ★★★
     console.log("--- Drop Event ---");
     console.log("Target Cell ID:", targetCell ? targetCell.id : "null");
     console.log("Dragged Card ID:", draggedCardId);
@@ -239,56 +238,67 @@ function handleDrop(event) {
 
     if (currentDraggedCardElement && targetCell) {
         const cardDefinition = cardDataSource.find(card => card.id === draggedCardId);
-
-        // ★★★ デバッグ用 console.log を追加 ★★★
         console.log("Found Card Definition in cardDataSource:", cardDefinition);
-            // isCorrectPlacement の決定部分を置き換える
-            let isCorrectPlacement = false; // 先に false で初期化
-            if (cardDefinition) {
-                console.log("Card Definition acceptableCells:", cardDefinition.acceptableCells);
-                console.log("Card Definition romaji:", cardDefinition.romaji);
-                console.log("Target Cell ID for comparison:", `"${targetCell.id}"`); // 比較直前の値を""で囲んで表示
 
-                if (cardDefinition.acceptableCells) {
-                    for (let i = 0; i < cardDefinition.acceptableCells.length; i++) {
-                        const acceptableCell = cardDefinition.acceptableCells[i];
-                        console.log(`Comparing: "${targetCell.id}" (length: ${targetCell.id.length}) with "${acceptableCell}" (length: ${acceptableCell.length})`); // ★各比較と長さを表示
-                        if (acceptableCell === targetCell.id) {
-                            isCorrectPlacement = true;
-                            console.log("Match found! Placement considered CORRECT based on acceptableCells.");
-                            break; 
-                        }
-                    }
-                }
-                
-                // Fallback (もしacceptableCellsがない場合、または上記で見つからなかった場合)
-                // この部分は今回の mfEndingCardsData では通常通らないはず
-                if (!isCorrectPlacement && cardDefinition.hasOwnProperty('correctCell') && !cardDefinition.acceptableCells && cardDefinition.correctCell === targetCell.id) {
-                    isCorrectPlacement = true;
-                    console.log("Placement considered CORRECT based on correctCell (fallback).");
+        let isCorrectPlacement = false;
+
+        if (cardDefinition) {
+            console.log("Card Definition acceptableCells:", cardDefinition.acceptableCells);
+            console.log("Card Definition romaji:", cardDefinition.romaji);
+            console.log("Target Cell ID for comparison:", `"${targetCell.id}"`);
+
+            if (cardDefinition.acceptableCells && cardDefinition.acceptableCells.includes(targetCell.id)) {
+                isCorrectPlacement = true;
+                console.log("Match found! Placement considered CORRECT based on acceptableCells.");
+            } else {
+                console.log("No match in acceptableCells for the current targetCell.");
+                // isCorrectPlacement は false のまま
+            }
+        } else {
+            console.log("No cardDefinition found for ID:", draggedCardId);
+            // isCorrectPlacement は false のまま
+        }
+
+        // --- ここからが配置処理 ---
+        if (isCorrectPlacement) {
+            console.log("Correct placement confirmed. Proceeding to place card.");
+            if (targetCell.children.length === 0) { // セルが空の場合のみ配置
+                targetCell.appendChild(currentDraggedCardElement);
+                currentDraggedCardElement.classList.add('placed-correctly');
+                currentDraggedCardElement.draggable = false;
+
+                currentScore++;
+                updateScoreDisplay();
+
+                if (cardDefinition.relatedRuleIds) { // cardDefinition が存在することを暗黙的に前提
+                    displayRuleExplanations(cardDefinition.relatedRuleIds);
                 }
 
-                if (!isCorrectPlacement) { // 上記のいずれでも true にならなかった場合
-                    console.log("Placement considered INCORRECT.");
-                    console.log("  - Target Cell ID:", `"${targetCell.id}"`);
-                    console.log("  - Acceptable Cells array:", cardDefinition.acceptableCells);
+                if (currentScore === totalCards && totalCards > 0) {
+                    setTimeout(() => {
+                        alert("素晴らしい！全問正解です！");
+                    }, 100);
                 }
             } else {
-                console.log("No cardDefinition found for ID:", draggedCardId);
+                console.log('Cell is already occupied. Returning card.');
+                if (cardsArea) cardsArea.appendChild(currentDraggedCardElement);
             }
-        if (isCorrectPlacement) {
-            // ... (正解処理) ...
-            console.log("Correct placement confirmed. Proceeding to place card."); // ★デバッグ
         } else {
-            // ... (不正解処理) ...
-            console.log("Incorrect placement confirmed or no card definition. Returning card."); // ★デバッグ
-            if (cardsArea && currentDraggedCardElement) cardsArea.appendChild(currentDraggedCardElement);
+            // isCorrectPlacement が false の場合 (不正解)
+            console.log("Incorrect placement determined (isCorrectPlacement is false) or no cardDefinition. Returning card.");
+            if (cardsArea && currentDraggedCardElement) {
+                 cardsArea.appendChild(currentDraggedCardElement);
+            }
         }
     } else {
-        console.log("Either currentDraggedCardElement or targetCell is null."); // ★デバッグ
-        if (currentDraggedCardElement && cardsArea) cardsArea.appendChild(currentDraggedCardElement); // ドラッグ要素があれば戻す
+        console.log("Either currentDraggedCardElement or targetCell is null. Cannot proceed with drop.");
+        if (draggedCardElement && cardsArea && document.body.contains(draggedCardElement) && draggedCardElement.parentElement !== cardsArea) {
+            //  ドラッグ操作が途中でキャンセルされた場合、カードは自動で戻ることが多い
+            // console.log("Attempting to return orphaned draggedCardElement to cardsArea.");
+            // cardsArea.appendChild(draggedCardElement);
+        }
     }
-    draggedCardElement = null; // これはグローバル変数なので、クリアするなら dragend の方が適切
+    // draggedCardElement = null; // dragend でのクリアを推奨
 }
 
     function displayRuleExplanations(ruleIds) {
