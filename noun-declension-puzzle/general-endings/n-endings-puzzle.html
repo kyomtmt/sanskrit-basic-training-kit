@@ -277,27 +277,38 @@ document.addEventListener('DOMContentLoaded', () => {
         // draggedCardElement は dragend でクリアされる
     }
 
-    function displayRuleExplanations(ruleIds) {
-        if (!ruleExplanationContainer || !ruleExplanationContent || !rulesDataSource) {
-            return;
-        }
-        if (ruleIds && ruleIds.length > 0) {
-            let html = '<ul>';
-            ruleIds.forEach(id => {
-                const rule = rulesDataSource[id];
-                if (rule) {
-                    html += `<li><strong>${rule.title}:</strong> ${rule.text}</li>`;
-                }
-            });
-            html += '</ul>';
-            ruleExplanationContent.innerHTML = html;
-            ruleExplanationContainer.style.display = 'block';
-        } else {
-            ruleExplanationContent.innerHTML = '';
-            ruleExplanationContainer.style.display = 'none';
-        }
+function displayRuleExplanations(ruleIds) {
+    if (!ruleExplanationContainer || !ruleExplanationContent || !rulesDataSource) {
+        console.error("Rule display prerequisites not met!"); // ★デバッグ
+        return;
     }
 
+    console.log("Attempting to display explanations for IDs:", ruleIds); // ★デバッグ
+
+    if (ruleIds && ruleIds.length > 0) {
+        let html = '<ul>';
+        ruleIds.forEach(id => {
+            const rule = rulesDataSource[id];
+            console.log(`Processing Rule ID: "${id}"`, "Found rule object:", rule); // ★デバッグ: 各IDと取得できたオブジェクトを表示
+            if (rule && typeof rule.title !== 'undefined' && typeof rule.text !== 'undefined') { // ★titleとtextの存在もチェック
+                html += `<li><strong>${rule.title}:</strong> ${rule.text}</li>`;
+            } else if (rule) { // ruleオブジェクトはあるが、titleかtextがない場合
+                html += `<li><strong>Error:</strong> Rule ID "${id}" has incomplete definition (title or text missing).</li>`;
+                console.warn(`Incomplete definition for Rule ID: "${id}"`, rule); // ★デバッグ
+            } else { // ruleオブジェクト自体が見つからない場合
+                html += `<li><i>ルールID "${id}" の解説が見つかりません。</i></li>`;
+                console.warn(`Rule ID not found in rulesDataSource: "${id}"`); // ★デバッグ
+            }
+        });
+        html += '</ul>';
+        ruleExplanationContent.innerHTML = html;
+        ruleExplanationContainer.style.display = 'block';
+    } else {
+        ruleExplanationContent.innerHTML = '';
+        ruleExplanationContainer.style.display = 'none';
+    }
+}
+    
     dropzones.forEach(zone => {
         zone.addEventListener('dragover', handleDragOver);
         zone.addEventListener('drop', handleDrop);
