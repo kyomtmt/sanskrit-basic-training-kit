@@ -8,50 +8,78 @@
         /* 基本的なスタイル */
         body {
             font-family: sans-serif;
-            margin: 20px;
+            margin: 0; /* bodyのマージンを0に */
+            padding: 20px; /* bodyにパディングを設定 */
             text-align: center;
+            background-color: #f8f9fa; /* 名詞活用メニューと同じ背景色 */
         }
         h1 {
-            color: #333;
-            margin-bottom: 30px; /* タイトルとボタンリストの間隔を調整 (現在の1.5倍を想定) */
+            color: #343a40; /* 名詞活用メニューと同じ見出し色 */
+            margin-top: 20px; /* 上部の余白 */
+            margin-bottom: 40px; /* ボタンリストとの間隔を広めに */
+            font-size: 2.2em; /* 少し大きめに */
         }
         ul {
             list-style: none;
             padding: 0;
+            margin: 0 auto; /* ul自体を中央寄せ */
+            max-width: 450px; /* ボタンリストの最大幅を少し広めに */
         }
         li {
-            margin: 20px 0; /* ボタン間の間隔を調整 (現在の倍を想定) */
+            margin: 15px 0; /* ボタン間の間隔 */
         }
-        a {
+
+        /* ★★★ トップページのボタン用スタイル (名詞活用メニューのスタイルを参考に) ★★★ */
+        a.menu-button { /* 新しい共通クラス名 */
             text-decoration: none;
-            font-size: 1.2em;
+            font-size: 1.2em; /* 少し大きめ */
             color: white;
-            background-color: #007bff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            display: inline-block;
+            padding: 15px 25px; /* 少し大きめ */
+            border-radius: 8px; /* 少し大きめの角丸 */
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* 少し影を濃く */
         }
-        a:hover {
-            background-color: #0056b3;
+        a.menu-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
-        a.disabled {
-            background-color: #ccc;
+
+        /* アクティブなボタンの色 (例: Koala Lifestyle DAY の落ち着いた緑) */
+        a.menu-button.active {
+            background-color: #657056;
+        }
+        a.menu-button.active:hover {
+            background-color: #505a43;
+        }
+
+        /* 無効なボタンのスタイル */
+        a.menu-button.disabled {
+            background-color: #adb5bd; /* 少し濃いめのグレー */
+            color: #e9ecef; /* 文字色を薄く */
             pointer-events: none;
             cursor: default;
+            box-shadow: none; /* 影なし */
         }
+        a.menu-button.disabled:hover {
+            transform: none; /* ホバーエフェクトなし */
+        }
+
 
         /* 例: 簡単なメディアクエリ */
         @media (max-width: 600px) {
             h1 {
-                font-size: 1.5em;
-                margin-bottom: 20px; /* スマホ表示時のタイトル下のマージンも調整 */
+                font-size: 1.8em; /* スマホでは少し小さく */
+                margin-bottom: 30px;
             }
             li {
-                margin: 15px 0; /* スマホ表示時のボタン間マージンも調整 */
+                margin: 12px 0;
             }
-            a {
-                font-size: 1em;
-                padding: 8px 15px;
+            a.menu-button {
+                font-size: 1.1em;
+                padding: 12px 20px;
             }
         }
     </style>
@@ -59,10 +87,9 @@
 <body>
     <h1>Sanskrit Beginner's Training Kit</h1>
     <ul>
-        <!-- <li><a href="sandhi-quiz/">サンディクイズ</a></li> -->
-        <li><a href="https://kyomtmt.github.io/sandhi-quiz/" target="_blank">サンディクイズ</a></li>
-        <li><a href="noun-declension-puzzle/">名詞活用パズル</a></li>
-        <li><a href="verb-conjugation-puzzle/" class="disabled">動詞活用パズル (準備中)</a></li>
+        <li><a href="https://kyomtmt.github.io/sandhi-quiz/" target="_blank" class="menu-button active">サンディクイズ</a></li>
+        <li><a href="noun-declension-puzzle/" class="menu-button active">名詞活用パズル</a></li>
+        <li><a href="verb-conjugation-puzzle/" class="menu-button disabled">動詞活用パズル (準備中)</a></li>
     </ul>
 </body>
 </html>
