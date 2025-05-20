@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>名詞の格語尾パズル：中性</title>
+    <!-- 共通スタイルシートへのパスを修正 -->
+    <link rel="stylesheet" href="../common/style.css">
+    <style>
+        /* このパズル専用のスタイルがあればここに記述 */
+        /* common/style.cssでカバーされているので、ここは空でもOK */
+        /* ルール解説エリアのスタイル (marut.htmlから流用・調整) */
+        #rule-explanation-container {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        #rule-explanation-container h4 {
+            margin-top: 0;
+            color: #333;
+        }
+        #rule-explanation-content ul {
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+        #rule-explanation-content li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        #rule-explanation-content strong {
+            color: #0056b3; /* 解説のタイトル部分の色 */
+        }
+    </style>
+</head>
+<body>
+    <h1 id="puzzle-main-title">名詞の格語尾パズル：中性</h1>
+    <p id="puzzle-main-description">一般的な中性名詞の格語尾を正しい位置に配置してください。</p>
+
+    <div class="controls">
+        <p style="display: inline-block; margin-right: 20px;">スコア: <span id="score">0</span> / <span id="total-score">0</span></p>
+        <button id="reset-button">リセット</button>
+    </div>
+
+    <div class="puzzle-board">
+        <div id="declension-table-area">
+            <p>活用表 (ここにカードをドラッグ＆ドロップ)</p>
+            <table id="declension-table">
+                <thead>
+                    <tr>
+                        <th>格</th>
+                        <th>単数 (Singular)</th>
+                        <th>両数 (Dual)</th>
+                        <th>複数 (Plural)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>主格 (Nominative)</td>
+                        <td id="cell-nom-sg" class="dropzone"></td>
+                        <td id="cell-nom-du" class="dropzone"></td>
+                        <td id="cell-nom-pl" class="dropzone"></td>
+                    </tr>
+                    <tr>
+                        <td>対格 (Accusative)</td>
+                        <td id="cell-acc-sg" class="dropzone"></td>
+                        <td id="cell-acc-du" class="dropzone"></td>
+                        <td id="cell-acc-pl" class="dropzone"></td>
+                    </tr>
+                    <tr>
+                        <td>具格 (Instrumental)</td>
+                        <td id="cell-ins-sg" class="dropzone"></td>
+                        <td id="cell-ins-du" class="dropzone"></td>
+                        <td id="cell-ins-pl" class="dropzone"></td>
+                    </tr>
+                    <tr>
+                        <td>与格 (Dative)</td>
+                        <td id="cell-dat-sg" class="dropzone"></td>
+                        <td id="cell-dat-du" class="dropzone"></td>
+                        <td id="cell-dat-pl" class="dropzone"></td>
+                    </tr>
+                    <tr>
+                        <td>奪格 (Ablative)</td>
+                        <td id="cell-abl-sg" class="dropzone"></td>
+                        <td id="cell-abl-du" class="dropzone"></td>
+                        <td id="cell-abl-pl" class="dropzone"></td>
+                    </tr>
+                    <tr>
+                        <td>属格 (Genitive)</td>
+                        <td id="cell-gen-sg" class="dropzone"></td>
+                        <td id="cell-gen-du" class="dropzone"></td>
+                        <td id="cell-gen-pl" class="dropzone"></td>
+                    </tr>
+                    <tr>
+                        <td>処格 (Locative)</td>
+                        <td id="cell-loc-sg" class="dropzone"></td>
+                        <td id="cell-loc-du" class="dropzone"></td>
+                        <td id="cell-loc-pl" class="dropzone"></td>
+                    </tr>
+                    <tr>
+                        <td>呼格 (Vocative)</td>
+                        <td id="cell-voc-sg" class="dropzone"></td>
+                        <td id="cell-voc-du" class="dropzone"></td>
+                        <td id="cell-voc-pl" class="dropzone"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="cards-area">
+            {/* カードはJavaScriptでここに生成します */}
+        </div>
+    </div>
+
+    <div id="rule-explanation-container" style="display: none;">
+        <h4>関連する文法ルール解説</h4>
+        <div id="rule-explanation-content">
+            {/* JavaScriptによって内容が挿入されます */}
+        </div>
+    </div>
+
+    <!-- 全体メニューに戻るリンクのパスを修正 -->
+    <p><a href="../../index.html">全体メニューに戻る</a></p>
+
+    <!-- 共通スクリプトへのパスを修正 (もしあれば) -->
+    <!-- <script src="../../common/script.js"></script> -->
+    <!-- このパズル用のデータファイル -->
+    <script src="n-endings-data.js"></script>
+    <script src="general-grammar-rules.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("Neuter Endings Puzzle Page Loaded"); // ★変更: ログメッセージ
+
+    const scoreElement = document.getElementById('score');
+    const totalScoreElement = document.getElementById('total-score');
+    const cardsArea = document.getElementById('cards-area');
+    const dropzones = document.querySelectorAll('.dropzone');
+    const resetButton = document.getElementById('reset-button');
+    const ruleExplanationContainer = document.getElementById('rule-explanation-container');
+    const ruleExplanationContent = document.getElementById('rule-explanation-content');
+
+    const mainTitleElement = document.getElementById('puzzle-main-title');
+    const mainDescriptionElement = document.getElementById('puzzle-main-description');
+    // n-endings-data.js で定義された declensionPuzzleTitle, declensionPuzzleDescription を使用
+    if (typeof declensionPuzzleTitle !== 'undefined' && mainTitleElement) {
+        mainTitleElement.textContent = declensionPuzzleTitle;
+    }
+    if (typeof declensionPuzzleDescription !== 'undefined' && mainDescriptionElement) {
+        mainDescriptionElement.textContent = declensionPuzzleDescription;
+    }
+
+    let currentScore = 0;
+    let totalCards = 0;
+    let draggedCardElement = null;
+
+    // ★★★ 変更: 使用するデータソースを nEndingCardsData に指定 ★★★
+    const cardDataSource = typeof nEndingCardsData !== 'undefined' ? nEndingCardsData : [];
+    const rulesDataSource = typeof generalGrammarRuleExplanations !== 'undefined' ? generalGrammarRuleExplanations : {};
+
+    function updateScoreDisplay() {
+        if (scoreElement) {
+            scoreElement.textContent = currentScore;
+        }
+        if (totalScoreElement) {
+            totalScoreElement.textContent = totalCards;
+        }
+    }
+
+    function initializePuzzle() {
+        currentScore = 0;
+        draggedCardElement = null; // initializePuzzle 時にクリア
+        if (cardsArea) cardsArea.innerHTML = '';
+        dropzones.forEach(zone => {
+            zone.innerHTML = '';
+            // zone.classList.remove('occupied'); // 必要なら
+        });
+        if (ruleExplanationContainer) ruleExplanationContainer.style.display = 'none';
+        if (ruleExplanationContent) ruleExplanationContent.innerHTML = '';
+
+        if (cardDataSource.length > 0) {
+            totalCards = cardDataSource.length;
+            // console.log("Card data loaded:", totalCards, "cards for Neuter puzzle"); // ★変更: ログメッセージ
+
+            const shuffledCardsData = [...cardDataSource].sort(() => Math.random() - 0.5);
+
+            shuffledCardsData.forEach(cardData => {
+                const cardElement = document.createElement('div');
+                cardElement.id = cardData.id;
+                cardElement.classList.add('card');
+                cardElement.draggable = true;
+                cardElement.textContent = cardData.romaji;
+                // dataset.correctCell はもう使用しない
+                cardElement.addEventListener('dragstart', handleDragStart);
+                cardElement.addEventListener('dragend', () => { draggedCardElement = null; }); // dragendでクリア
+                if (cardsArea) cardsArea.appendChild(cardElement);
+            });
+        } else {
+            totalCards = 0;
+            console.error("nEndingCardsData is NOT available or empty."); // ★変更: エラーメッセージ
+            if (cardsArea) cardsArea.textContent = "カードデータの読み込みに失敗しました。";
+        }
+        updateScoreDisplay();
+    }
+
+    function handleDragStart(event) {
+        draggedCardElement = event.target;
+        event.dataTransfer.setData('text/plain', event.target.id);
+    }
+
+    function handleDragOver(event) {
+        event.preventDefault();
+    }
+
+    function handleDrop(event) {
+        event.preventDefault();
+        const targetCell = event.target.closest('.dropzone');
+        const draggedCardId = event.dataTransfer.getData('text/plain');
+        // dragstartで設定されたグローバル変数を使用する方が、IDで再取得するより直接的
+        const currentDraggedCardElement = draggedCardElement;
+
+        // console.log("--- Drop Event (Neuter) ---"); // ★変更: ログメッセージ
+        // console.log("Target Cell ID:", targetCell ? targetCell.id : "null");
+        // console.log("Dragged Card ID:", draggedCardId);
+        // console.log("Dragged Card Element:", currentDraggedCardElement);
+
+        if (currentDraggedCardElement && currentDraggedCardElement.id === draggedCardId && targetCell) {
+            const cardDefinition = cardDataSource.find(card => card.id === currentDraggedCardElement.id);
+            // console.log("Found Card Definition in cardDataSource (Neuter):", cardDefinition); // ★変更: ログメッセージ
+
+            let isCorrectPlacement = false;
+
+            if (cardDefinition) {
+                // console.log("Card Definition acceptableCells:", cardDefinition.acceptableCells);
+                // console.log("Card Definition romaji:", cardDefinition.romaji);
+                // console.log("Target Cell ID for comparison:", `"${targetCell.id}"`);
+
+                if (cardDefinition.acceptableCells && cardDefinition.acceptableCells.includes(targetCell.id)) {
+                    isCorrectPlacement = true;
+                    // console.log("Match found! Placement considered CORRECT based on acceptableCells.");
+                } else {
+                    // console.log("No match in acceptableCells for the current targetCell.");
+                }
+            } else {
+                // console.log("No cardDefinition found for ID:", draggedCardId);
+            }
+
+            if (isCorrectPlacement) {
+                // console.log("Correct placement confirmed. Proceeding to place card.");
+                if (targetCell.children.length === 0) {
+                    targetCell.appendChild(currentDraggedCardElement);
+                    currentDraggedCardElement.classList.add('placed-correctly');
+                    currentDraggedCardElement.draggable = false;
+                    currentScore++;
+                    updateScoreDisplay();
+                    if (cardDefinition.relatedRuleIds) {
+                        displayRuleExplanations(cardDefinition.relatedRuleIds);
+                    }
+                    if (currentScore === totalCards && totalCards > 0) {
+                        setTimeout(() => { alert("素晴らしい！全問正解です！"); }, 100);
+                    }
+                } else {
+                    // console.log('Cell is already occupied. Returning card.');
+                    if (cardsArea) cardsArea.appendChild(currentDraggedCardElement);
+                }
+            } else {
+                // console.log("Incorrect placement determined or no cardDefinition. Returning card.");
+                if (cardsArea && currentDraggedCardElement) {
+                     cardsArea.appendChild(currentDraggedCardElement);
+                }
+            }
+        } else {
+            // console.log("Drag condition not met. Cannot proceed with drop.");
+        }
+        // draggedCardElement は dragend でクリアされる
+    }
+
+    function displayRuleExplanations(ruleIds) {
+        if (!ruleExplanationContainer || !ruleExplanationContent || !rulesDataSource) {
+            return;
+        }
+        if (ruleIds && ruleIds.length > 0) {
+            let html = '<ul>';
+            ruleIds.forEach(id => {
+                const rule = rulesDataSource[id];
+                if (rule) {
+                    html += `<li><strong>${rule.title}:</strong> ${rule.text}</li>`;
+                }
+            });
+            html += '</ul>';
+            ruleExplanationContent.innerHTML = html;
+            ruleExplanationContainer.style.display = 'block';
+        } else {
+            ruleExplanationContent.innerHTML = '';
+            ruleExplanationContainer.style.display = 'none';
+        }
+    }
+
+    dropzones.forEach(zone => {
+        zone.addEventListener('dragover', handleDragOver);
+        zone.addEventListener('drop', handleDrop);
+    });
+
+    if (resetButton) {
+        resetButton.addEventListener('click', () => {
+            initializePuzzle();
+        });
+    }
+
+    initializePuzzle();
+});
+</script>
+</body>
+</html>
