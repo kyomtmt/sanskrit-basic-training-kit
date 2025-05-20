@@ -51,7 +51,7 @@ const nEndingCardsData = [
     },
     { // 単数処格: -i
         id: "n-i-loc-sg",
-        romaji: "-i",
+        romaji: "-i (単数)",
         acceptableCells: ["cell-loc-sg"],
         relatedRuleIds: ["ending_i_short"] // ending_i_short_n_pl とは区別
     },
@@ -109,19 +109,19 @@ const nEndingCardsData = [
     // Plural (複数) n. - 8枚
     { // 複数主格・対格・呼格用 -i カード (1枚目)
         id: "n-i-nav-pl-1", // ID例変更
-        romaji: "-i",
+        romaji: "-i (複数)",
         acceptableCells: ["cell-nom-pl", "cell-acc-pl", "cell-voc-pl"],
         relatedRuleIds: ["ending_i_short_n_pl", "rule4_n_nom_voc_acc_equal", "rule3_voc_equals_nom", "rule6_nasal_insertion_n_pl"]
     },
     { // 複数主格・対格・呼格用 -i カード (2枚目)
         id: "n-i-nav-pl-2",
-        romaji: "-i",
+        romaji: "-i (複数)",
         acceptableCells: ["cell-nom-pl", "cell-acc-pl", "cell-voc-pl"],
         relatedRuleIds: ["ending_i_short_n_pl", "rule4_n_nom_voc_acc_equal", "rule3_voc_equals_nom", "rule6_nasal_insertion_n_pl"]
     },
     { // 複数主格・対格・呼格用 -i カード (3枚目)
         id: "n-i-nav-pl-3",
-        romaji: "-i",
+        romaji: "-i (複数)",
         acceptableCells: ["cell-nom-pl", "cell-acc-pl", "cell-voc-pl"],
         relatedRuleIds: ["ending_i_short_n_pl", "rule4_n_nom_voc_acc_equal", "rule3_voc_equals_nom", "rule6_nasal_insertion_n_pl"]
     },
