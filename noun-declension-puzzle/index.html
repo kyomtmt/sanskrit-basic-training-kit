@@ -88,11 +88,17 @@
         }
 
             /* 新しいサブセクション見出し用のスタイル */
-            h3.subsection-title {
-            margin-top: 30px; /* 上のセクションとの間隔 */
-            margin-bottom: 10px;
-            color: #343a40; /* 少し濃いめの見出し色 */
+        h3.subsection-title {
+            margin-top: 40px;    /* 上の要素との間隔を調整 */
+            margin-bottom: 20px; /* 下のリストとの間隔を少し広めに */
+            color: #343a40;       /* 文字色は元の濃いめの色を維持 */
             font-size: 1.2em;
+            background-color: #e9ecef; /* 薄いグレーの背景色 */
+            padding: 10px 20px;    /* 上下左右にパディング */
+            border-radius: 5px;     /* 角を少し丸める */
+            display: inline-block;  /* 背景色がコンテンツの幅に収まるように */
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08); /* ごく薄い影を追加 */
+            /* text-align: left; */ /* もし左寄せにしたい場合はこの行のコメントを外す */
         }
     </style>
 </head>
