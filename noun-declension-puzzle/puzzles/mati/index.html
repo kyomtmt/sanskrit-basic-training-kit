@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>名詞活用パズル: mati (思考) - 女性</title>
+    <link rel="stylesheet" href="../../common/style.css">
+    <style>
+        /* mati パズル専用のスタイルがあればここに記述 */
+    </style>
+</head><body>
+    <h1>名詞活用パズル: mati (思考) - 女性</h1>
+
+    <div class="controls">
+        <p style="display: inline-block; margin-right: 20px;">スコア: <span id="score">0</span> / 24</p>
+        <button id="reset-button">リセット</button>
+    </div>
+
+    <div class="puzzle-board">
+        <div id="declension-table-area">
+            <p>活用表 (ここにカードをドラッグ＆ドロップ)</p>
+            <table id="declension-table">
+                <thead>
+                    <tr>
+                        <th>格</th>
+                        <th>単数 (Singular)</th>
+                        <th>両数 (Dual)</th>
+                        <th>複数 (Plural)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>主格 (Nominative)</td>
+                        <td id="cell-nom-sg" class="dropzone"></td>
+                        <td id="cell-nom-du" class="dropzone"></td>
+                        <td id="cell-nom-pl" class="dropzone"></td>
+                    </tr>
+                    <tr>
+                        <td>対格 (Accusative)</td>
+                        <td id="cell-acc-sg" class="dropzone"></td>
+                        <td id="cell-acc-du" class="dropzone"></td>
+                        <td id="cell-acc-pl" class="dropzone"></td>
+                    </tr>
+                    <tr>
+                        <td>具格 (Instrumental)</td>
+                        <td id="cell-ins-sg" class="dropzone"></td>
+                        <td id="cell-ins-du" class="dropzone"></td>
+                        <td id="cell-ins-pl" class="dropzone"></td>
+                    </tr>
+                    <tr>
+                        <td>与格 (Dative)</td>
+                        <td id="cell-dat-sg" class="dropzone"></td>
+                        <td id="cell-dat-du" class="dropzone"></td>
+                        <td id="cell-dat-pl" class="dropzone"></td>
+                    </tr>
+                    <tr>
+                        <td>奪格 (Ablative)</td>
+                        <td id="cell-abl-sg" class="dropzone"></td>
+                        <td id="cell-abl-du" class="dropzone"></td>
+                        <td id="cell-abl-pl" class="dropzone"></td>
+                    </tr>
+                    <tr>
+                        <td>属格 (Genitive)</td>
+                        <td id="cell-gen-sg" class="dropzone"></td>
+                        <td id="cell-gen-du" class="dropzone"></td>
+                        <td id="cell-gen-pl" class="dropzone"></td>
+                    </tr>
+                    <tr>
+                        <td>処格 (Locative)</td>
+                        <td id="cell-loc-sg" class="dropzone"></td>
+                        <td id="cell-loc-du" class="dropzone"></td>
+                        <td id="cell-loc-pl" class="dropzone"></td>
+                    </tr>
+                    <tr>
+                        <td>呼格 (Vocative)</td>
+                        <td id="cell-voc-sg" class="dropzone"></td>
+                        <td id="cell-voc-du" class="dropzone"></td>
+                        <td id="cell-voc-pl" class="dropzone"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="cards-area">
+            <!-- カードはJavaScriptでここに生成します -->
+        </div>
+    </div>
+
+    <p><a href="../../../index.html">全体メニューに戻る</a></p>
+
+    <script src="../../common/script.js"></script> 
+    <script src="mati-data.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("mati (思考) puzzle page loaded");
+
+    const scoreElement = document.getElementById('score');
+    const cardsArea = document.getElementById('cards-area');
+    const dropzones = document.querySelectorAll('.dropzone');
+    const resetButton = document.getElementById('reset-button');
+
+    let currentScore = 0;
+    let totalCards = 0; // matiCardsData.length で設定されます
+    let draggedCardElement = null;
+
+    function updateScoreDisplay() {
+        if (scoreElement) {
+            scoreElement.textContent = `${currentScore} / ${totalCards}`;
+        }
+    }
+
+    function initializePuzzle() {
+        currentScore = 0;
+        draggedCardElement = null;
+        if (cardsArea) cardsArea.innerHTML = '';
+        dropzones.forEach(zone => {
+            zone.innerHTML = '';
+            // もし以前に正解クラスがついていたら削除 (リセットのため)
+            const placedCard = zone.querySelector('.card.placed-correctly');
+            if(placedCard) {
+                zone.removeChild(placedCard); // 一旦削除し、再シャッフルでcardsAreaに戻す準備
+            }
+        });
+
+        if (typeof matiCardsData !== 'undefined' && matiCardsData.length > 0) {
+            totalCards = matiCardsData.length; // ★★★ ここで totalCards を設定
+            console.log("matiCardsData is available:", totalCards, "cards");
+
+            // データをシャッフルしてカードを生成
+            const shuffledCardsData = [...matiCardsData].sort(() => Math.random() - 0.5);
+
+            shuffledCardsData.forEach(cardData => {
+                const cardElement = document.createElement('div');
+                cardElement.id = cardData.id; // ★ idはカードデータから取得
+                cardElement.classList.add('card');
+                cardElement.draggable = true;
+                cardElement.textContent = cardData.romaji;
+                // cardElement.dataset.correctCell はもう使わないが、他の場所で参照してる可能性を考慮し残すか、
+                // 完全に不要なら削除。今回はdataset.romajiを主に使う
+                cardElement.dataset.romaji = cardData.romaji; // romajiをデータ属性として保持
+
+                cardElement.addEventListener('dragstart', handleDragStart);
+                cardElement.addEventListener('dragend', handleDragEnd);
+
+                if (cardsArea) cardsArea.appendChild(cardElement);
+            });
+        } else {
+            totalCards = 0;
+            console.error("matiCardsData is NOT available or empty.");
+            if (cardsArea) cardsArea.textContent = "カードデータの読み込みに失敗しました。";
+        }
+        updateScoreDisplay();
+    }
+
+    function handleDragStart(event) {
+        draggedCardElement = event.target;
+        event.dataTransfer.setData('text/plain', event.target.id); // ドラッグするデータの種類と内容
+    }
+
+    function handleDragEnd(event) {
+        // ドラッグ終了時の処理（必要なら）
+    }
+
+    function handleDragOver(event) {
+        event.preventDefault(); // ドロップを許可するために必須
+    }
+
+    function handleDrop(event) {
+        event.preventDefault();
+        const targetCell = event.target.closest('.dropzone');
+        const draggedCardId = event.dataTransfer.getData('text/plain'); // ドラッグされたカードのIDを取得
+
+        // draggedCardElement が null でないこと、IDが一致すること、ドロップ先が有効なセルであることを確認
+        if (draggedCardElement && draggedCardElement.id === draggedCardId && targetCell) {
+            const targetCellId = targetCell.id;
+
+            // ドラッグされたカードの定義を matiCardsData から見つける
+            const draggedCardDefinition = matiCardsData.find(cardDef => cardDef.id === draggedCardElement.id);
+
+            if (draggedCardDefinition) {
+                // カードの定義にある acceptableCells 配列に、ドロップ先のセルIDが含まれているか確認
+                if (draggedCardDefinition.acceptableCells.includes(targetCellId)) {
+                    // 正解の処理
+                    if (targetCell.children.length === 0) { // セルが空の場合のみ配置
+                        targetCell.appendChild(draggedCardElement);
+                        draggedCardElement.classList.add('placed-correctly'); // 正解クラスを追加
+                        currentScore++;
+                        updateScoreDisplay();
+
+                        if (currentScore === totalCards && totalCards > 0) {
+                            setTimeout(() => {
+                                alert("素晴らしい！全問正解です！");
+                            }, 100);
+                        }
+                    } else {
+                        // セルが既に埋まっている場合 (カードをcardsAreaに戻す)
+                        if (cardsArea) cardsArea.appendChild(draggedCardElement);
+                    }
+                } else {
+                    // 不正解の場合、カードを元の場所に戻す
+                    if (cardsArea) cardsArea.appendChild(draggedCardElement);
+                }
+            } else {
+                // カード定義が見つからない異常系 (通常は発生しないはず)
+                console.error("Dragged card definition not found for ID:", draggedCardElement.id);
+                if (cardsArea) cardsArea.appendChild(draggedCardElement);
+            }
+        }
+        draggedCardElement = null; // ドラッグ状態をリセット
+    }
+
+    dropzones.forEach(zone => {
+        zone.addEventListener('dragover', handleDragOver);
+        zone.addEventListener('drop', handleDrop);
+    });
+
+    if (resetButton) {
+        resetButton.addEventListener('click', () => {
+            initializePuzzle();
+        });
+    }
+
+    initializePuzzle(); // パズルを初期化
+});
+</script>
+</body>
+</html>
