@@ -7,31 +7,32 @@
     <!-- common/style.css へのパスを確認 -->
     <link rel="stylesheet" href="common/style.css"> <!-- ★修正: このHTMLファイルはnoun-declension-puzzle直下なので、../ は不要 -->
     <style>
+        /* 基本的なスタイル */
         body {
             text-align: center;
-            font-family: sans-serif; /* 基本的なフォントファミリーを指定 */
+            font-family: sans-serif;
             padding: 20px;
-            background-color: #f8f9fa; /* 少し明るい背景色 */
+            background-color: #f8f9fa;
         }
         h1 {
-            color: #343a40; /* 見出しの色 */
+            color: #343a40;
             margin-bottom: 10px;
         }
-        p.description { /* 「挑戦したい名詞を選んでください」のテキスト用 */
+        p.description {
             color: #495057;
             margin-bottom: 30px;
             font-size: 1.1em;
         }
-        ul {
+        ul { /* ← ulの定義はここに集約 */
             list-style: none;
             padding: 0;
-            margin: 0 auto; /* ul自体を中央寄せ */
-            max-width: 500px; /* ボタンリストの最大幅 */
+            margin: 0 auto; /* 上下マージンは0、左右autoで中央寄せ */
+            max-width: 500px;
         }
         li {
             margin: 12px 0;
         }
-        a.puzzle-select-button { /* 全てのパズル選択ボタン共通の基本スタイル */
+        a.puzzle-select-button {
             text-decoration: none;
             font-size: 1.1em;
             color: white;
@@ -50,7 +51,7 @@
 
         /* 具体的な名詞パズル用ボタンのスタイル */
         a.specific-noun-button {
-            background-color: #5d8aa8; /* 落ち着いた青 (例) */
+            background-color: #5d8aa8;
         }
         a.specific-noun-button:hover {
             background-color: #4a6d85;
@@ -58,15 +59,15 @@
 
         /* 一般的な格語尾パズル用ボタンの新しいスタイル */
         a.general-ending-button {
-            background-color: #657056; /* Koala Lifestyle DAY: 落ち着いた濃い緑 */
+            background-color: #657056;
         }
         a.general-ending-button:hover {
-            background-color: #505a43; /* 少し濃く */
+            background-color: #505a43;
         }
 
         /* 「全体メニューに戻る」ボタン専用スタイル */
         a.back-to-main-menu {
-            background-color: #7f8c8d; /* 落ち着いたグレー (例) */
+            background-color: #7f8c8d;
             margin-top: 30px;
             display: inline-block;
             width: auto;
@@ -76,32 +77,36 @@
             background-color: #6c7a7b;
         }
         
-        /* 格語尾パズルのセクション見出し */
-        h2.section-title {
+        /* h2を囲むdiv用のスタイル */
+        .section-container {
+            text-align: center;
             margin-top: 40px;
-            margin-bottom: 15px;
+            margin-bottom: 20px; /* h2と次の要素(ulやh3)との間隔 */
+        }
+        
+        /* 格語尾パズルのセクション見出し */ 
+        h2.section-title {
             color: #495057;
             font-size: 1.3em;
             border-bottom: 1px solid #dee2e6;
             padding-bottom: 5px;
-            /* display: inline-block;  ← この行をコメントアウトまたは削除 */
-            /* width: fit-content; */ /* または、このようにして幅を内容に合わせることを試みる */
-            /* margin-left: auto;   */ /* width を指定した場合、中央揃えのために追加 */
-            /* margin-right: auto;  */ /* width を指定した場合、中央揃えのために追加 */
+            display: inline-block;
         }
 
-            /* 新しいサブセクション見出し用のスタイル */
+        /* .section-container + ul と h3.subsection-title + ul の定義は削除済み */
+
+        /* 新しいサブセクション見出し用のスタイル */
         h3.subsection-title {
-            margin-top: 40px;    /* 上の要素との間隔を調整 */
-            margin-bottom: 20px; /* 下のリストとの間隔を少し広めに */
-            color: #343a40;       /* 文字色は元の濃いめの色を維持 */
+            /* 「名詞の活用」(h2のdiv)と「母音語幹」(h3)の間の空間を調整 */
+            margin-top: 20px;    /* 前の.section-containerからの間隔を調整 */
+            margin-bottom: 15px; /* このh3と下のulとの間隔を調整 */
+            color: #343a40;
             font-size: 1.2em;
-            background-color: #e9ecef; /* 薄いグレーの背景色 */
-            padding: 10px 20px;    /* 上下左右にパディング */
-            border-radius: 5px;     /* 角を少し丸める */
-            display: inline-block;  /* 背景色がコンテンツの幅に収まるように */
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08); /* ごく薄い影を追加 */
-            /* text-align: left; */ /* もし左寄せにしたい場合はこの行のコメントを外す */
+            background-color: #e9ecef;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: inline-block;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
         }
     </style>
 </head>
@@ -109,13 +114,19 @@
     <h1>名詞活用パズル</h1>
     <p class="description">挑戦したい名詞またはルールを選んでください。</p>
 
-    <h2 class="section-title">格語尾ルール</h2>
+<!-- 「格語尾ルール」セクション -->
+    <div class="section-container"> {/* ← h2を囲むdivにクラス名をつけました */}
+        <h2 class="section-title">格語尾ルール</h2>
+    </div>
     <ul>
         <li><a href="general-endings/mf-endings-puzzle.html" class="puzzle-select-button general-ending-button">格語尾パズル (男性・女性)</a></li>
         <li><a href="general-endings/n-endings-puzzle.html" class="puzzle-select-button general-ending-button">格語尾パズル (中性)</a></li>
     </ul>
     
-    <h2 class="section-title">名詞の活用</h2>
+    <!-- 「名詞の活用」セクション -->
+    <div class="section-container"> {/* ← h2を囲むdivにクラス名をつけました */}
+        <h2 class="section-title">名詞の活用</h2>
+    </div>
     <h3 class="subsection-title">母音語幹</h3>
     <ul>
         <!-- ここに母音語幹の名詞リストが将来的に入ります -->
