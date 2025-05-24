@@ -6,8 +6,8 @@ const pracMCardsData = [
     { id: 'prac-m-acc-sg',  romaji: 'prāñcam',     devanagari: 'प्राञ्चम्',     acceptableCells: ['cell-acc-sg'] }, // 強語幹
     { id: 'prac-m-ins-sg',  romaji: 'prācā',       devanagari: 'प्राचा',       acceptableCells: ['cell-ins-sg'] }, // 中語幹
     { id: 'prac-m-dat-sg',  romaji: 'prāce',       devanagari: 'प्राचे',       acceptableCells: ['cell-dat-sg'] }, // 中語幹 (一般的な形)
-    { id: 'prac-m-abl-sg',  romaji: 'prācaḥ',      devanagari: 'प्राचः',      acceptableCells: ['cell-abl-sg'] }, // 中語幹 (一般的な形)
-    { id: 'prac-m-gen-sg',  romaji: 'prācaḥ',      devanagari: 'प्राचः',      acceptableCells: ['cell-gen-sg'] }, // 中語幹 (一般的な形)
+    { id: 'prac-m-abl-sg',  romaji: 'prācaḥ (単数)',      devanagari: 'प्राचः',      acceptableCells: ['cell-abl-sg'] }, // 中語幹 (一般的な形)
+    { id: 'prac-m-gen-sg',  romaji: 'prācaḥ (単数)',      devanagari: 'प्राचः',      acceptableCells: ['cell-gen-sg'] }, // 中語幹 (一般的な形)
     { id: 'prac-m-loc-sg',  romaji: 'prāci',       devanagari: 'प्राचि',       acceptableCells: ['cell-loc-sg'] }, // 中語幹
     { id: 'prac-m-voc-sg',  romaji: 'prāṅ',        devanagari: 'प्राङ्',        acceptableCells: ['cell-voc-sg'] }, // N.V.sg. prāṅ (主格と同じ)
 
@@ -28,7 +28,7 @@ const pracMCardsData = [
     // 主格・呼格が同じ prāñcaḥ なので、カードを2枚用意
     { id: 'prac-m-nav-pl-1', romaji: 'prāñcaḥ',     devanagari: 'प्राञ्चः',     acceptableCells: ['cell-nom-pl', 'cell-voc-pl'] }, // 強語幹
     { id: 'prac-m-nav-pl-2', romaji: 'prāñcaḥ',     devanagari: 'प्राञ्चः',     acceptableCells: ['cell-nom-pl', 'cell-voc-pl'] },
-    { id: 'prac-m-acc-pl', romaji: 'prācaḥ',      devanagari: 'प्राचः',      acceptableCells: ['cell-acc-pl'] }, // 中語幹
+    { id: 'prac-m-acc-pl', romaji: 'prācaḥ (複数)',      devanagari: 'प्राचः',      acceptableCells: ['cell-acc-pl'] }, // 中語幹
     { id: 'prac-m-ins-pl', romaji: 'prāgbhiḥ',    devanagari: 'प्राग्भिः',    acceptableCells: ['cell-ins-pl'] }, // 中語幹
     // 与格・奪格が同じ prāgbhyaḥ (一般的な形) なので、カードを2枚用意
     { id: 'prac-m-da-pl-1',  romaji: 'prāgbhyaḥ',   devanagari: 'प्राग्भ्यः',   acceptableCells: ['cell-dat-pl', 'cell-abl-pl'] }, // 中語幹
