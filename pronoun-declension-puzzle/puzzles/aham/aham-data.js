@@ -1,20 +1,32 @@
-// pronoun-declension-puzzle/puzzles/aham.js
-const pronounData = {
-  word: "aham", // 代表形 (主格単数)
-  translation: "私 (1人称)", // 意味と人称
-  declensions: {
-    "Nominative":  { "Singular": "aham",   "Dual": "āvām",     "Plural": "vayam" },
-    "Accusative":  { "Singular": "mām",    "Dual": "āvām",     "Plural": "asmān" },
-    "Instrumental":{ "Singular": "mayā",   "Dual": "āvābhyām", "Plural": "asmābhiḥ" },
-    "Dative":      { "Singular": "mahyam", "Dual": "āvābhyām", "Plural": "asmabhyam" },
-    "Ablative":    { "Singular": "mat",    "Dual": "āvābhyām", "Plural": "asmat" },
-    "Genitive":    { "Singular": "mama",   "Dual": "āvayoḥ",   "Plural": "asmākam" },
-    "Locative":    { "Singular": "mayi",   "Dual": "āvayoḥ",   "Plural": "asmāsu" }
-    // 1人称代名詞には通常、呼格 (Vocative) はありません。
-  }
+// pronoun-declension-puzzle/puzzles/aham/aham-data.js
+const pronounPuzzleData = {
+  word: "aham",
+  translation: "私 (1人称)",
+  cards: [
+    // Singular
+    { id: "card-aham-nom-sg", text: "aham",   acceptableCells: ["cell-nom-sg"] },
+    { id: "card-aham-acc-sg", text: "mām",    acceptableCells: ["cell-acc-sg"] },
+    { id: "card-aham-ins-sg", text: "mayā",   acceptableCells: ["cell-ins-sg"] },
+    { id: "card-aham-dat-sg", text: "mahyam", acceptableCells: ["cell-dat-sg"] },
+    { id: "card-aham-abl-sg", text: "mat",    acceptableCells: ["cell-abl-sg"] },
+    { id: "card-aham-gen-sg", text: "mama",   acceptableCells: ["cell-gen-sg"] },
+    { id: "card-aham-loc-sg", text: "mayi",   acceptableCells: ["cell-loc-sg"] },
+    // Dual
+    { id: "card-aham-nomacc-du-1", text: "āvām",   acceptableCells: ["cell-nom-du", "cell-acc-du"] },
+    { id: "card-aham-nomacc-du-2", text: "āvām",   acceptableCells: ["cell-nom-du", "cell-acc-du"] },
+    { id: "card-aham-insdatabl-du-1", text: "āvābhyām", acceptableCells: ["cell-ins-du", "cell-dat-du", "cell-abl-du"] },
+    { id: "card-aham-insdatabl-du-2", text: "āvābhyām", acceptableCells: ["cell-ins-du", "cell-dat-du", "cell-abl-du"] },
+    { id: "card-aham-insdatabl-du-3", text: "āvābhyām", acceptableCells: ["cell-ins-du", "cell-dat-du", "cell-abl-du"] },
+    { id: "card-aham-genloc-du-1", text: "āvayoḥ", acceptableCells: ["cell-gen-du", "cell-loc-du"] },
+    { id: "card-aham-genloc-du-2", text: "āvayoḥ", acceptableCells: ["cell-gen-du", "cell-loc-du"] },
+    // Plural
+    { id: "card-aham-nom-pl", text: "vayam",  acceptableCells: ["cell-nom-pl"] },
+    { id: "card-aham-acc-pl", text: "asmān",  acceptableCells: ["cell-acc-pl"] },
+    { id: "card-aham-ins-pl", text: "asmābhiḥ", acceptableCells: ["cell-ins-pl"] },
+    { id: "card-aham-dat-pl", text: "asmabhyam",acceptableCells: ["cell-dat-pl"] },
+    { id: "card-aham-abl-pl", text: "asmat",  acceptableCells: ["cell-abl-pl"] },
+    { id: "card-aham-gen-pl", text: "asmākam",acceptableCells: ["cell-gen-pl"] },
+    { id: "card-aham-loc-pl", text: "asmāsu", acceptableCells: ["cell-loc-pl"] }
+  ]
+  // declensions オブジェクトは、もしセルの正解テキストを参照するのに使うなら残してもOK
 };
-
-// もし既存のスクリプトがグローバル変数からデータを読み込む場合
-// (例: window.currentPuzzleData = pronounData; のようにするか、
-// script.js が直接この pronounData 変数を参照するようにします)
-// window.currentPuzzleData = pronounData; // ← この行を有効にするか、script.jsの読み込み方を確認
