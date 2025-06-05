@@ -1,0 +1,165 @@
+/* === Common Styles for Sanskrit Basic Training Kit Puzzles === */
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    margin: 20px;
+    background-color: #f4f7f6; /* 少し落ち着いた背景色 */
+    color: #333;
+    line-height: 1.6;
+}
+
+h1 {
+    color: #2c3e50; /* 少し濃いめの見出し色 */
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+p {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+/* --- Puzzle Specific Shared Styles --- */
+
+.controls {
+    margin-bottom: 20px;
+    text-align: center; /* コントロール類は中央寄せが多いのでデフォルトに */
+}
+
+.controls p { /* スコア表示など */
+    display: inline-block;
+    margin-right: 20px;
+    font-size: 1.1em;
+}
+
+.controls button {
+    padding: 8px 15px;
+    margin-left: 10px;
+    cursor: pointer;
+    background-color: #657056; /* Koala DAY: 落ち着いた濃い緑 */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1em;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.controls button:hover {
+    background-color: #505a43; /* 少し濃く */
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+
+.puzzle-board {
+    display: flex;
+    margin-top: 20px;
+    justify-content: center; /* 中央に配置 */
+    flex-wrap: wrap; /* 画面が狭い場合に折り返すように */
+    gap: 30px; /* テーブルとカードエリアの間の隙間 */
+}
+
+#declension-table-area {
+    /* margin-right は .puzzle-board の gap で調整するので不要かも */
+    margin-bottom: 20px; /* 折り返した時のため */
+}
+
+#declension-table table {
+    border-collapse: collapse;
+    background-color: white; /* テーブル背景 */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* テーブルに少し影 */
+}
+
+#declension-table th,
+#declension-table td {
+    border: 1px solid #ddd; /* テーブルの線を少し薄く */
+    padding: 10px; /* 少し広めに */
+    min-width: 90px;
+    height: 40px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 0.95em;
+}
+
+#declension-table th {
+    background-color: #e8eaf6; /* ヘッダー背景色 (例: Indigo Lighten 5) */
+    font-weight: bold;
+}
+
+.dropzone {
+    background-color: #f9f9f9; /* ドロップゾーンの背景色 */
+    min-height: 40px; /* tdのheightと同じかそれ以上 */
+    box-sizing: border-box;
+    transition: background-color 0.2s ease; /* ホバー時の色変化のため */
+}
+
+.dropzone:hover { /* ドラッグ中のカードが上に乗った時の仮のスタイル */
+    background-color: #e0e0e0;
+}
+
+#cards-area {
+    border: 2px dashed #aaa;
+    padding: 15px;
+    width: 300px; /* カードの数やサイズに応じて調整 */
+    min-height: 350px;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    background-color: #eceff1; /* カードエリアの背景色 (例: Blue Grey Lighten 5) */
+    border-radius: 8px; /* 角を丸く */
+}
+
+.card {
+    border: 1px solid #bdbdbd; /* カードの枠線 */
+    background-color: white;
+    padding: 6px 12px;
+    margin: 5px;
+    cursor: grab;
+    font-size: 1em; /* 基本のフォントサイズ */
+    border-radius: 4px;
+    user-select: none; /* ドラッグ中にテキスト選択されるのを防ぐ */
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.1); /* カードに少し影 */
+    transition: transform 0.1s ease-out, box-shadow 0.1s ease-out; /* ドラッグ開始時の視覚効果のため */
+}
+
+.card:active { /* ドラッグ開始（マウスボタン押下）時のスタイル */
+    cursor: grabbing;
+    transform: scale(1.05);
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+}
+
+/* === 今回追加するスタイル === */
+.card.placed-correctly {
+    border: 2px solid #4CAF50;        /* 緑色の枠線 */
+    background-color: #e8f5e9;      /* 薄い緑色の背景 */
+    box-shadow: 0px 0px 8px rgba(76, 175, 80, 0.4); /* 薄い緑色の影 */
+    cursor: default !important;       /* 配置後はドラッグ不可のカーソルに */
+    /* opacity: 0.8; */             /* 少し薄くするのもアリ (任意) */
+}
+
+/* === レスポンシブ対応の基本的な例 (ルートのindex.htmlから拝借) === */
+@media (max-width: 768px) { /* タブレットサイズくらいから調整開始 */
+    .puzzle-board {
+        flex-direction: column; /* 縦積みに変更 */
+        align-items: center;    /* 中央寄せ */
+        gap: 20px;
+    }
+    #declension-table-area {
+        margin-right: 0; /* 横並びでなくなるので不要に */
+    }
+    #cards-area {
+        width: 90%; /* 画面幅に合わせる */
+        max-width: 400px; /* あまり広がりすぎないように */
+        margin-top: 10px;
+    }
+    #declension-table th,
+    #declension-table td {
+        padding: 6px;
+        min-width: 70px;
+        font-size: 0.85em;
+    }
+    .card {
+        font-size: 0.9em;
+        padding: 4px 8px;
+    }
+}
