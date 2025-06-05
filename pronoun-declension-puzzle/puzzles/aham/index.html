@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>代名詞曲用パズル: aham (私)</title>
+    <link rel="stylesheet" href="../../common/style.css"> <!-- 2階層上のcommon/style.css -->
+</head>
+<body>
+    <h1>代名詞曲用パズル: aham (私)</h1>
+
+    <div class="controls">
+        <!-- <p>スコア: <span id="score">0</span> / <span id="total-score">21</span></p> --> <!-- スコア表示をコメントアウト -->
+        <button id="reset-button">リセット</button>
+    </div>
+
+    <div class="puzzle-board">
+        <div id="declension-table-area">
+            <p class="table-caption">曲用表 (ここにカードをドラッグ＆ドロップ)</p>
+            <table id="declension-table">
+                <thead>
+                    <tr>
+                        <th>格</th>
+                        <th>単数 (Singular)</th>
+                        <th>両数 (Dual)</th>
+                        <th>複数 (Plural)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr> <td>主格 (Nominative)</td>  <td data-case="Nominative" data-number="Singular" class="dropzone"></td> <td data-case="Nominative" data-number="Dual" class="dropzone"></td> <td data-case="Nominative" data-number="Plural" class="dropzone"></td> </tr>
+                    <tr> <td>対格 (Accusative)</td>  <td data-case="Accusative" data-number="Singular" class="dropzone"></td> <td data-case="Accusative" data-number="Dual" class="dropzone"></td> <td data-case="Accusative" data-number="Plural" class="dropzone"></td> </tr>
+                    <tr> <td>具格 (Instrumental)</td><td data-case="Instrumental" data-number="Singular" class="dropzone"></td><td data-case="Instrumental" data-number="Dual" class="dropzone"></td><td data-case="Instrumental" data-number="Plural" class="dropzone"></td></tr>
+                    <tr> <td>与格 (Dative)</td>      <td data-case="Dative" data-number="Singular" class="dropzone"></td>    <td data-case="Dative" data-number="Dual" class="dropzone"></td>    <td data-case="Dative" data-number="Plural" class="dropzone"></td> </tr>
+                    <tr> <td>奪格 (Ablative)</td>    <td data-case="Ablative" data-number="Singular" class="dropzone"></td>   <td data-case="Ablative" data-number="Dual" class="dropzone"></td>   <td data-case="Ablative" data-number="Plural" class="dropzone"></td> </tr>
+                    <tr> <td>属格 (Genitive)</td>    <td data-case="Genitive" data-number="Singular" class="dropzone"></td>   <td data-case="Genitive" data-number="Dual" class="dropzone"></td>   <td data-case="Genitive" data-number="Plural" class="dropzone"></td> </tr>
+                    <tr> <td>処格 (Locative)</td>    <td data-case="Locative" data-number="Singular" class="dropzone"></td>   <td data-case="Locative" data-number="Dual" class="dropzone"></td>   <td data-case="Locative" data-number="Plural" class="dropzone"></td> </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="cards-area">
+            <!-- カードはJavaScriptでここに生成されます -->
+        </div>
+    </div>
+
+    <div class="navigation-links" style="text-align: center; margin-top: 30px;">
+        <a href="../../index.html" style="margin-right: 15px;">代名詞パズル選択に戻る</a> <!-- pronoun-declension-puzzle/index.html へのリンク -->
+        <a href="../../../index.html">全体のトップメニューに戻る</a> <!-- sanskrit-basic-training-kit/index.html へのリンク -->
+    </div>
+
+    <script src="data.js"></script> <!-- 同じフォルダの data.js (aham.jsからリネーム想定) -->
+    <script src="../../common/script.js"></script> <!-- 2階層上のcommon/script.js -->
+</body>
+</html>
