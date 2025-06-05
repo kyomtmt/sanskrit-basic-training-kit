@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>代名詞曲用パズル - メニュー</title>
+    <!-- common/style.css へのパスを確認 -->
+    <link rel="stylesheet" href="common/style.css"> 
+    <style>
+        /* 基本的なスタイル */
+        body {
+            text-align: center;
+            font-family: sans-serif;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        h1 {
+            color: #343a40;
+            margin-bottom: 10px;
+        }
+        p.description {
+            color: #495057;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        ul { /* ← ulの定義はここに集約 */
+            list-style: none;
+            padding: 0;
+            margin: 0 auto; /* 上下マージンは0、左右autoで中央寄せ */
+            max-width: 500px;
+        }
+        li {
+            margin: 12px 0;
+        }
+        a.puzzle-select-button {
+            text-decoration: none;
+            font-size: 1.1em;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.07);
+        }
+        a.puzzle-select-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        /* 具体的な名詞パズル用ボタンのスタイル */
+        a.specific-noun-button {
+            background-color: #5d8aa8;
+        }
+        a.specific-noun-button:hover {
+            background-color: #4a6d85;
+        }
+
+        /* 一般的な格語尾パズル用ボタンの新しいスタイル */
+        a.general-ending-button {
+            background-color: #657056;
+        }
+        a.general-ending-button:hover {
+            background-color: #505a43;
+        }
+
+        /* 「全体メニューに戻る」ボタン専用スタイル */
+        a.back-to-main-menu {
+            background-color: #7f8c8d;
+            margin-top: 30px;
+            display: inline-block;
+            width: auto;
+            padding: 10px 25px;
+        }
+        a.back-to-main-menu:hover {
+            background-color: #6c7a7b;
+        }
+        
+        /* h2を囲むdiv用のスタイル */
+        .section-container {
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 20px; /* h2と次の要素(ulやh3)との間隔 */
+        }
+        
+        /* 格語尾パズルのセクション見出し */ 
+        h2.section-title {
+            color: #495057;
+            font-size: 1.3em;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 5px;
+            display: inline-block;
+        }
+
+        /* .section-container + ul と h3.subsection-title + ul の定義は削除済み */
+
+        /* 新しいサブセクション見出し用のスタイル */
+        h3.subsection-title {
+            /* 「名詞の活用」(h2のdiv)と「母音語幹」(h3)の間の空間を調整 */
+            margin-top: 20px;    /* 前の.section-containerからの間隔を調整 */
+            margin-bottom: 15px; /* このh3と下のulとの間隔を調整 */
+            color: #343a40;
+            font-size: 1.2em;
+            background-color: #e9ecef;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: inline-block;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+    </style>
+</head>
+<body>
+<h1>代名詞曲用パズル</h1>
+  <p class="description">挑戦したい代名詞を選んでください。</p>
+
+<ul>
+    <li><a href="puzzles/aham-puzzle.html" class="puzzle-select-button specific-noun-button">aham (私) - 1人称代名詞</a></li>
+    <!-- 他の代名詞も準備ができ次第、ここに追加します -->
+    <!-- 例: <li><a href="puzzles/tvam-puzzle.html" class="puzzle-select-button specific-noun-button">tvam (あなた) - 2人称代名詞 (準備中)</a></li> -->
+</ul>
+
+    <p><a href="../index.html" class="puzzle-select-button back-to-main-menu">全体メニューに戻る</a></p>
+
+    <!-- script.js のパスも確認 -->
+    <!-- <script src="common/script.js"></script> --> <!-- ★修正: このHTMLファイルはnoun-declension-puzzle直下なので、../ は不要 -->
+</body>
+</html>
