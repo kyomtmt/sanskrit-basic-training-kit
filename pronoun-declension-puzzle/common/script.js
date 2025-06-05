@@ -1,173 +1,130 @@
 // pronoun-declension-puzzle/common/script.js
+// ★ グローバルスコープの pronounPuzzleData を参照するように変更
+console.log("pronounPuzzleData from script.js:", typeof pronounPuzzleData !== 'undefined' ? pronounPuzzleData : "Not loaded yet");
+console.log("Pronoun common script loaded!");
 
-console.log("pronounData from script.js:", pronounData); // pronounData の確認用 (これは残す)
-console.log("Pronoun common script loaded!");         // これも残す
-
-// DOMContentLoaded イベントリスナーで囲むのは良い習慣です
 document.addEventListener('DOMContentLoaded', () => {
     console.log("Pronoun puzzle page DOM fully loaded and parsed");
 
-    // HTML要素の取得 (IDは代名詞パズルのHTMLに合わせてください)
     const cardsArea = document.getElementById('cards-area');
-    const dropzones = document.querySelectorAll('.dropzone'); // これは共通で使えるはず
+    const dropzones = document.querySelectorAll('.dropzone');
     const resetButton = document.getElementById('reset-button');
-    // スコア関連の要素は不要なのでコメントアウトまたは削除
-    // const scoreElement = document.getElementById('score');
+    let draggedCardElement = null;
 
-    let draggedCardElement = null; // ドラッグ中のカード要素を保持
-
-    // --- 1. カード生成処理 ---
     function initializePuzzle() {
         console.log("Initializing pronoun puzzle...");
         draggedCardElement = null;
-        if (cardsArea) cardsArea.innerHTML = ''; // カードエリアをクリア
+        if (cardsArea) cardsArea.innerHTML = '';
         dropzones.forEach(zone => {
-            zone.innerHTML = ''; // ドロップゾーンをクリア
-            // 正解時に付与したクラスもリセットする場合 (もしあれば)
-            // zone.classList.remove('placed-correctly-cell'); // 例
+            zone.innerHTML = '';
+            zone.classList.remove('placed-correctly'); // 正解スタイルをクリア
+            // zone.classList.remove('placed-correctly-cell'); // セル側のスタイルもあればクリア
         });
 
-        // pronounData が存在するか確認 (aham-data.js から読み込まれているはず)
-        if (typeof pronounData !== 'undefined' && pronounData.declensions) {
-            console.log("pronounData is available:", pronounData);
+        // ★ pronounPuzzleData を参照
+        if (typeof pronounPuzzleData !== 'undefined' && pronounPuzzleData.cards) {
+            console.log("pronounPuzzleData.cards is available:", pronounPuzzleData.cards);
 
-            const allDeclensions = []; // 全ての曲用形を一時的に格納する配列
+            const shuffledCardsData = [...pronounPuzzleData.cards].sort(() => Math.random() - 0.5);
 
-            // pronounData.declensions オブジェクトから全ての曲用形を取り出す
-            for (const caseName in pronounData.declensions) { // "Nominative", "Accusative", ...
-                for (const numberName in pronounData.declensions[caseName]) { // "Singular", "Dual", "Plural"
-                    const declensionText = pronounData.declensions[caseName][numberName];
-                    allDeclensions.push({
-                        text: declensionText,
-                        case: caseName,  // 正しい格
-                        number: numberName // 正しい数
-                    });
-                }
-            }
-            console.log("All declensions to create cards:", allDeclensions);
-
-            // カードをシャッフル
-            const shuffledDeclensions = [...allDeclensions].sort(() => Math.random() - 0.5);
-
-            // シャッフルされたデータからカード要素を生成
-            shuffledDeclensions.forEach((declensionData, index) => {
+            shuffledCardsData.forEach(cardData => {
                 const cardElement = document.createElement('div');
-                cardElement.id = `card-${pronounData.word}-${index}`; // ユニークなID
+                cardElement.id = cardData.id; // データからIDを使用
                 cardElement.classList.add('card');
                 cardElement.draggable = true;
-                cardElement.textContent = declensionData.text; // カードに表示するテキスト
+                cardElement.textContent = cardData.text;
+                // ★ acceptableCells を JSON 文字列として data属性に格納
+                cardElement.dataset.acceptableCells = JSON.stringify(cardData.acceptableCells);
+                cardElement.dataset.text = cardData.text; // カードのテキスト
 
-                // 正解判定用に、正しい格と数をデータ属性として持たせる
-                cardElement.dataset.correctCase = declensionData.case;
-                cardElement.dataset.correctNumber = declensionData.number;
-
-                // ドラッグイベントのリスナーを設定
                 cardElement.addEventListener('dragstart', handleDragStart);
-                // cardElement.addEventListener('dragend', handleDragEnd); // 必要であれば
-
                 if (cardsArea) cardsArea.appendChild(cardElement);
             });
-
         } else {
-            console.error("pronounData is NOT available or declensions are missing.");
+            console.error("pronounPuzzleData.cards is NOT available.");
             if (cardsArea) cardsArea.textContent = "カードデータの読み込みに失敗しました。";
         }
-        // スコア表示更新は不要
-        // updateScoreDisplay();
     }
 
-    // --- 2. ドラッグ開始処理 ---
     function handleDragStart(event) {
-        draggedCardElement = event.target; // ドラッグされているカード要素を保存
-        // event.dataTransfer.setData('text/plain', event.target.id); // IDの受け渡しは必須ではないかも
-        console.log('DragStart:', draggedCardElement.textContent,
-                    'Correct Case:', draggedCardElement.dataset.correctCase,
-                    'Correct Number:', draggedCardElement.dataset.correctNumber);
+        draggedCardElement = event.target;
+        console.log('DragStart:', draggedCardElement.id, 'Text:', draggedCardElement.dataset.text);
     }
 
-    // --- 3. ドロップゾーン上での処理 (ドラッグオーバー) ---
     function handleDragOver(event) {
-        event.preventDefault(); // ドロップを許可するために必須
+        event.preventDefault();
     }
 
-    // --- 4. ドロップ処理 ---
     function handleDrop(event) {
         event.preventDefault();
-        const targetCell = event.target.closest('.dropzone'); // ドロップ先のセル
+        const targetCell = event.target.closest('.dropzone');
 
         if (draggedCardElement && targetCell) {
-            // ドロップ先セルの期待する格と数を取得 (HTMLのdata属性から)
-            const targetCase = targetCell.dataset.case;
-            const targetNumber = targetCell.dataset.number;
+            const targetCellId = targetCell.id; // ドロップ先セルのIDを取得
+            // ★ カードの dataset.acceptableCells から許容セルIDのリストを取得
+            const acceptableCellsForCard = JSON.parse(draggedCardElement.dataset.acceptableCells);
+            const draggedCardText = draggedCardElement.dataset.text;
 
-            // ドラッグされたカードの正しい格と数を取得 (カードのdata属性から)
-            const cardCorrectCase = draggedCardElement.dataset.correctCase;
-            const cardCorrectNumber = draggedCardElement.dataset.correctNumber;
+            console.log('Attempting Drop: Card', draggedCardElement.id, `(Text: "${draggedCardText}")`,
+                        'on cell ID:', targetCellId,
+                        'Card accepts cells:', acceptableCellsForCard);
 
-            console.log('Attempting Drop:', draggedCardElement.textContent,
-                        `Card expects (${cardCorrectCase}, ${cardCorrectNumber})`,
-                        'on cell expecting:', `(${targetCase}, ${targetNumber})`);
+            // ★ 正誤判定: ドロップ先セルのIDが、カードのacceptableCellsに含まれているか
+            if (acceptableCellsForCard.includes(targetCellId)) {
+                // (オプション) さらに、カードのテキストと、そのセルに入るべきテキストが一致するかどうか
+                // let cellExpectedText = (pronounPuzzleData.declensions && pronounPuzzleData.declensions[targetCell.dataset.case] && pronounPuzzleData.declensions[targetCell.dataset.case][targetCell.dataset.number]) ? pronounPuzzleData.declensions[targetCell.dataset.case][targetCell.dataset.number] : null;
+                // if (draggedCardText === cellExpectedText) { ... }
 
-            // 正誤判定
-            if (cardCorrectCase === targetCase && cardCorrectNumber === targetNumber) {
-                // 正解の場合
-                if (targetCell.children.length === 0) { // セルが空なら配置
+                if (targetCell.children.length === 0) {
                     targetCell.appendChild(draggedCardElement);
-                    draggedCardElement.classList.add('placed-correctly'); // 正解スタイルを適用
-                    draggedCardElement.draggable = false; // 配置後はドラッグ不可に
-                    console.log('Correct! Card placed.');
-                    // スコア加算は不要
-                    // currentScore++;
-                    // updateScoreDisplay();
-
-                    // 全問正解のチェック (スコアがないので、全てのdropzoneが埋まったかで判定も可能)
+                    draggedCardElement.classList.add('placed-correctly');
+                    draggedCardElement.draggable = false;
+                    console.log('Correct! Card placed in', targetCellId);
                     checkIfAllCorrect();
-
                 } else {
-                    console.log('Cell is already occupied. Card returned to cards area.');
-                    if (cardsArea) cardsArea.appendChild(draggedCardElement); // カードを戻す
+                    console.log('Cell', targetCellId, 'is already occupied.');
+                    if (cardsArea) cardsArea.appendChild(draggedCardElement);
                 }
             } else {
-                // 不正解の場合
-                console.log('Incorrect placement! Card returned to cards area.');
-                if (cardsArea) cardsArea.appendChild(draggedCardElement); // カードを戻す
+                console.log('Incorrect placement! Card', draggedCardElement.id, 'cannot be placed in', targetCellId);
+                if (cardsArea) cardsArea.appendChild(draggedCardElement);
             }
         }
-        draggedCardElement = null; // ドラッグ状態をリセット
+        draggedCardElement = null;
     }
 
-    // --- (オプション) 全問正解チェック ---
     function checkIfAllCorrect() {
-        let allFilled = true;
+        let allFilledCorrectly = true;
         dropzones.forEach(zone => {
-            if (zone.children.length === 0) {
-                allFilled = false;
+            // セルに子要素があり、かつその子要素が 'placed-correctly' クラスを持っているか
+            if (zone.children.length === 0 || !zone.children[0].classList.contains('placed-correctly')) {
+                allFilledCorrectly = false;
             }
         });
-        if (allFilled) {
-            console.log("All cells are filled!");
+        if (allFilledCorrectly) {
+            console.log("All cells are filled correctly!");
             setTimeout(() => {
-                alert("素晴らしい！全問正解です！"); // アラート表示
+                alert("素晴らしい！全問正解です！");
             }, 100);
         }
     }
 
-
-    // ドロップゾーンにイベントリスナーを設定
     dropzones.forEach(zone => {
         zone.addEventListener('dragover', handleDragOver);
         zone.addEventListener('drop', handleDrop);
     });
 
-    // リセットボタンにイベントリスナーを設定
     if (resetButton) {
         resetButton.addEventListener('click', () => {
             console.log('Reset button clicked');
-            initializePuzzle(); // パズルを初期化
+            initializePuzzle();
         });
     }
 
-    // パズルを初期化して開始
-    initializePuzzle();
-
+    // aham-data.js で定義された pronounPuzzleData を使う
+    if (typeof pronounPuzzleData !== 'undefined') {
+        initializePuzzle();
+    } else {
+        console.error("pronounPuzzleData is not defined. Check if aham-data.js is loaded correctly before script.js and if the variable name is correct.");
+    }
 });
