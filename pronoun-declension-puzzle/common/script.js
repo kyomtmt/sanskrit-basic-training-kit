@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cardsArea = document.getElementById('cards-area');
     const dropzones = document.querySelectorAll('.dropzone');
     const resetButton = document.getElementById('reset-button');
+    const showAnswerButton = document.getElementById('show-answer-button'); // ★追加
     let draggedCardElement = null;
 
     function initializePuzzle() {
@@ -17,26 +18,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if (cardsArea) cardsArea.innerHTML = '';
         dropzones.forEach(zone => {
             zone.innerHTML = '';
-            zone.classList.remove('placed-correctly'); // 正解スタイルをクリア
-            // zone.classList.remove('placed-correctly-cell'); // セル側のスタイルもあればクリア
+            zone.classList.remove('placed-correctly');
         });
 
-        // ★ pronounPuzzleData を参照
         if (typeof pronounPuzzleData !== 'undefined' && pronounPuzzleData.cards) {
             console.log("pronounPuzzleData.cards is available:", pronounPuzzleData.cards);
-
             const shuffledCardsData = [...pronounPuzzleData.cards].sort(() => Math.random() - 0.5);
-
             shuffledCardsData.forEach(cardData => {
                 const cardElement = document.createElement('div');
-                cardElement.id = cardData.id; // データからIDを使用
+                cardElement.id = cardData.id;
                 cardElement.classList.add('card');
                 cardElement.draggable = true;
                 cardElement.textContent = cardData.text;
-                // ★ acceptableCells を JSON 文字列として data属性に格納
                 cardElement.dataset.acceptableCells = JSON.stringify(cardData.acceptableCells);
-                cardElement.dataset.text = cardData.text; // カードのテキスト
-
+                cardElement.dataset.text = cardData.text;
                 cardElement.addEventListener('dragstart', handleDragStart);
                 if (cardsArea) cardsArea.appendChild(cardElement);
             });
@@ -60,8 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const targetCell = event.target.closest('.dropzone');
 
         if (draggedCardElement && targetCell) {
-            const targetCellId = targetCell.id; // ドロップ先セルのIDを取得
-            // ★ カードの dataset.acceptableCells から許容セルIDのリストを取得
+            const targetCellId = targetCell.id;
             const acceptableCellsForCard = JSON.parse(draggedCardElement.dataset.acceptableCells);
             const draggedCardText = draggedCardElement.dataset.text;
 
@@ -69,12 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         'on cell ID:', targetCellId,
                         'Card accepts cells:', acceptableCellsForCard);
 
-            // ★ 正誤判定: ドロップ先セルのIDが、カードのacceptableCellsに含まれているか
             if (acceptableCellsForCard.includes(targetCellId)) {
-                // (オプション) さらに、カードのテキストと、そのセルに入るべきテキストが一致するかどうか
-                // let cellExpectedText = (pronounPuzzleData.declensions && pronounPuzzleData.declensions[targetCell.dataset.case] && pronounPuzzleData.declensions[targetCell.dataset.case][targetCell.dataset.number]) ? pronounPuzzleData.declensions[targetCell.dataset.case][targetCell.dataset.number] : null;
-                // if (draggedCardText === cellExpectedText) { ... }
-
                 if (targetCell.children.length === 0) {
                     targetCell.appendChild(draggedCardElement);
                     draggedCardElement.classList.add('placed-correctly');
@@ -96,7 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function checkIfAllCorrect() {
         let allFilledCorrectly = true;
         dropzones.forEach(zone => {
-            // セルに子要素があり、かつその子要素が 'placed-correctly' クラスを持っているか
             if (zone.children.length === 0 || !zone.children[0].classList.contains('placed-correctly')) {
                 allFilledCorrectly = false;
             }
@@ -108,6 +96,41 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 100);
         }
     }
+    
+    // ★ここから下を追加
+    function showAnswers() {
+        console.log("Show Answer button clicked");
+        if (typeof pronounPuzzleData === 'undefined' || !pronounPuzzleData.cards) {
+            console.error("Cannot show answers: pronounPuzzleData is not available.");
+            return;
+        }
+
+        if (cardsArea) cardsArea.innerHTML = '';
+        dropzones.forEach(zone => {
+            zone.innerHTML = '';
+            zone.classList.remove('placed-correctly');
+        });
+
+        const answerCards = JSON.parse(JSON.stringify(pronounPuzzleData.cards));
+
+        dropzones.forEach(zone => {
+            const cellId = zone.id;
+            const cardIndex = answerCards.findIndex(card => card.acceptableCells.includes(cellId));
+
+            if (cardIndex !== -1) {
+                const cardData = answerCards[cardIndex];
+                const answerElement = document.createElement('div');
+                answerElement.textContent = cardData.text;
+                answerElement.classList.add('card', 'placed-correctly');
+                zone.appendChild(answerElement);
+                answerCards.splice(cardIndex, 1);
+            } else {
+                console.warn(`No valid card found for cell: ${cellId}`);
+            }
+        });
+        console.log("All answers are displayed.");
+    }
+    // ★ここまで追加
 
     dropzones.forEach(zone => {
         zone.addEventListener('dragover', handleDragOver);
@@ -121,7 +144,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // aham-data.js で定義された pronounPuzzleData を使う
+    // ★追加
+    if (showAnswerButton) {
+        showAnswerButton.addEventListener('click', showAnswers);
+    }
+
     if (typeof pronounPuzzleData !== 'undefined') {
         initializePuzzle();
     } else {
