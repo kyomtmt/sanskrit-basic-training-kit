@@ -1,6 +1,6 @@
 // Data for bhū- (f.) declension puzzle (地)
 
-const bhuCardsData = [
+const puzzleData = [
     // 単数 (Singular)
     // 主格・呼格が同じ bhūḥ
     { id: 'bhu-nv-sg-1', romaji: 'bhūḥ',            devanagari: 'भूः',          acceptableCells: ['cell-nom-sg', 'cell-voc-sg'] },

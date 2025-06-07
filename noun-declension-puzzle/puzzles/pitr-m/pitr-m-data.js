@@ -1,6 +1,6 @@
 // Data for pitṛ- (m.) declension puzzle (父 - 男性)
 
-const pitrMCardsData = [
+const puzzleData = [
     // 単数 (Singular)
     { id: 'pitr-m-nom-sg',  romaji: 'pitā',           devanagari: 'पिता',          acceptableCells: ['cell-nom-sg'] },
     { id: 'pitr-m-acc-sg',  romaji: 'pitaram',        devanagari: 'पितरम्',       acceptableCells: ['cell-acc-sg'] },

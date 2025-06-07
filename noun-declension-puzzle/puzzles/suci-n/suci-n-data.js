@@ -1,6 +1,6 @@
 // Data for śuci- (n.) declension puzzle (清い - 中性) - 
 
-const suciNCardsData = [
+const puzzleData = [
     // 単数 (Singular) - 中性
     { id: 'suci-n-na-sg-1', romaji: 'śuci',           devanagari: 'शुचि',         acceptableCells: ['cell-nom-sg', 'cell-acc-sg'] },
     { id: 'suci-n-na-sg-2', romaji: 'śuci',           devanagari: 'शुचि',         acceptableCells: ['cell-nom-sg', 'cell-acc-sg'] },

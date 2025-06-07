@@ -1,6 +1,6 @@
 // Data for rājan (m.) declension puzzle
 
-const rajanCardsData = [
+const puzzleData = [
     // 単数 (Singular)
     { id: 'rajan-nom-sg',  romaji: 'rājā',           devanagari: 'राजा',          acceptableCells: ['cell-nom-sg'] }, // 強語幹
     { id: 'rajan-acc-sg',  romaji: 'rājānam',        devanagari: 'राजानम्',       acceptableCells: ['cell-acc-sg'] }, // 強語幹

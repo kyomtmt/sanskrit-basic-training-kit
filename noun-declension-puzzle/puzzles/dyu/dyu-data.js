@@ -1,6 +1,6 @@
 // Data for dyu- (f.) declension puzzle (天)
 
-const dyuCardsData = [
+const puzzleData = [
     // 単数 (Singular)
     { id: 'dyu-nv-sg-1', romaji: 'dyauḥ',    devanagari: 'द्यौः',   acceptableCells: ['cell-nom-sg', 'cell-voc-sg'] },
     { id: 'dyu-nv-sg-2', romaji: 'dyauḥ',    devanagari: 'द्यौः',   acceptableCells: ['cell-nom-sg', 'cell-voc-sg'] },

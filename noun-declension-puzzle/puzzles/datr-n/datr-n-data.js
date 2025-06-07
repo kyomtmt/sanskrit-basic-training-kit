@@ -1,6 +1,6 @@
 // Data for dātṛ- (n.) declension puzzle (与える者、与え手 - 中性) - 最新の活用表に基づいて修正
 
-const datrNCardsData = [
+const puzzleData = [
     // 単数 (Singular) - 中性
     // 主格・対格が同じ dātṛ
     { id: 'datr-n-na-sg-1', romaji: 'dātṛ',           devanagari: 'दातृ',          acceptableCells: ['cell-nom-sg', 'cell-acc-sg'] },

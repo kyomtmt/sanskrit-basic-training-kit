@@ -1,6 +1,6 @@
 // Data for paśu (m.) declension puzzle
 
-const pasuCardsData = [
+const puzzleData = [
     // 単数 (Singular)
     { id: 'pasu-nom-sg',  romaji: 'paśuḥ',    devanagari: 'पशुः',   acceptableCells: ['cell-nom-sg'] },
     { id: 'pasu-acc-sg',  romaji: 'paśum',    devanagari: 'पशुम्',   acceptableCells: ['cell-acc-sg'] },

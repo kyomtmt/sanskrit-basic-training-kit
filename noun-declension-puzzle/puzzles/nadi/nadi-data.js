@@ -1,6 +1,6 @@
 // Data for nadī- (f.) declension puzzle (川)
 
-const nadiCardsData = [
+const puzzleData = [
     // 単数 (Singular)
     { id: 'nadi-nom-sg',  romaji: 'nadī',     devanagari: 'नदी',      acceptableCells: ['cell-nom-sg'] },
     { id: 'nadi-acc-sg',  romaji: 'nadīm',    devanagari: 'नदीम्',     acceptableCells: ['cell-acc-sg'] },

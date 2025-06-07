@@ -1,6 +1,6 @@
 // Data for agnimat- (m. "possessing fire") declension puzzle
 
-const agnimatCardsData = [
+const puzzleData = [
     // 単数 (Singular)
     { id: 'card-agnimat-nom-sg',  romaji: 'agnimān',      devanagari: 'अग्निमान्',    correctCell: 'cell-nom-sg' },
     { id: 'card-agnimat-acc-sg',  romaji: 'agnimantam',   devanagari: 'अग्निमन्तम्',  correctCell: 'cell-acc-sg' },

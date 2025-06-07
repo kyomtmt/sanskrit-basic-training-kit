@@ -1,6 +1,6 @@
 // Data for manas- (n. "mind") declension puzzle
 
-const manasCardsData = [
+const puzzleData = [
     // 単数 (Singular)
     { id: 'card-manas-nom-sg',  romaji: 'manaḥ',     devanagari: 'मनः',     correctCell: 'cell-nom-sg' },
     { id: 'card-manas-acc-sg',  romaji: 'manaḥ',     devanagari: 'मनः',     correctCell: 'cell-acc-sg' }, // 中性: 主格と同じ

@@ -1,6 +1,6 @@
 // Data for prāc- (n.) declension puzzle (東方の、前方へ - 中性)
 
-const pracNCardsData = [
+const puzzleData = [
     // 単数 (Singular) - 中性
     // 主格・対格・呼格が同じ prāk なので、カードを3枚用意
     { id: 'prac-n-nav-sg-1', romaji: 'prāk',        devanagari: 'प्राक्',        acceptableCells: ['cell-nom-sg', 'cell-acc-sg', 'cell-voc-sg'] }, // 語幹の末尾がkになる

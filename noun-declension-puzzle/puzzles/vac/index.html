@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>名詞活用パズル: vāc (言葉) - 女性</title>
+    <title>名詞曲用パズル: vāc (言葉) - 女性</title>
+    <link rel="icon" href="/sanskrit-basic-training-kit/favicon.ico">
     <link rel="stylesheet" href="../../common/style.css">
     <style>
         /* vacパズル専用のスタイルがあればここに記述 */
         /* common/style.cssでカバーされているので、ここは空でもOK */
     </style>
 </head><body>
-    <h1>名詞活用パズル: vāc (言葉) - 女性</h1>
+    <h1>名詞曲用パズル: vāc (言葉) - 女性</h1>
 
-    <div class="controls">
-        <p style="display: inline-block; margin-right: 20px;">スコア: <span id="score">0</span> / 24</p>
-        <button id="reset-button">リセット</button>
-        <!-- ここに文字種トグルボタンやガイドON/OFFボタンなどを後で追加 -->
-    </div>
+<div class="controls">
+    <button id="reset-button">リセット</button>
+    <button id="show-answer-button">正解を見る</button>
+</div>
 
     <div class="puzzle-board">
         <div id="declension-table-area">
-            <p>活用表 (ここにカードをドラッグ＆ドロップ)</p>
+            <p>曲用表 (ここにカードをドラッグ＆ドロップ)</p>
             <table id="declension-table">
                 <thead>
                     <tr>
@@ -88,151 +88,13 @@
         </div>
     </div>
 
-    <p><a href="../../../index.html">全体メニューに戻る</a></p>
+<div class="navigation-links" style="text-align: center; margin-top: 30px;">
+    <a href="../../index.html" style="display: block; margin-bottom: 10px;">名詞曲用トップに戻る</a>
+    <a href="../../../index.html" style="display: block;">全体のトップメニューに戻る</a>
+</div>
 
-    <script src="../../common/script.js"></script> 
     <script src="vac-data.js"></script> 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    console.log("vac (言葉) - 女性 puzzle page loaded");
+    <script src="../../common/script.js"></script> 
 
-    const scoreElement = document.getElementById('score');
-    const cardsArea = document.getElementById('cards-area');
-    const dropzones = document.querySelectorAll('.dropzone');
-    const resetButton = document.getElementById('reset-button');
-
-    let currentScore = 0;
-    let totalCards = 0;
-    let draggedCardElement = null;
-
-    function updateScoreDisplay() {
-        if (scoreElement) {
-            scoreElement.textContent = `${currentScore} / ${totalCards}`;
-        }
-    }
-
-    function initializePuzzle() {
-        currentScore = 0;
-        draggedCardElement = null;
-        if (cardsArea) cardsArea.innerHTML = '';
-        dropzones.forEach(zone => {
-            zone.innerHTML = '';
-        });
-
-        if (typeof vacCardsData !== 'undefined' && vacCardsData.length > 0) {
-            totalCards = vacCardsData.length;
-            console.log("vacCardsData is available:", totalCards, "cards");
-
-            const shuffledCardsData = [...vacCardsData].sort(() => Math.random() - 0.5);
-
-            shuffledCardsData.forEach(cardData => {
-                const cardElement = document.createElement('div');
-                cardElement.id = cardData.id;
-                cardElement.classList.add('card');
-                cardElement.draggable = true;
-                cardElement.textContent = cardData.romaji; // 常にローマ字を表示
-                cardElement.dataset.correctCell = cardData.correctCell;
-                cardElement.dataset.romaji = cardData.romaji; // データとしては保持しておく
-                // cardElement.dataset.devanagari = cardData.devanagari; // 不要なら削除してもOK
-
-                cardElement.addEventListener('dragstart', handleDragStart);
-                cardElement.addEventListener('dragend', handleDragEnd);
-
-                if (cardsArea) cardsArea.appendChild(cardElement);
-            });
-        } else {
-            totalCards = 0;
-            console.error("vacCardsData is NOT available or empty.");
-            if (cardsArea) cardsArea.textContent = "カードデータの読み込みに失敗しました。";
-        }
-        updateScoreDisplay();
-    }
-
-    function handleDragStart(event) {
-        draggedCardElement = event.target;
-        event.dataTransfer.setData('text/plain', event.target.id);
-        console.log('DragStart:', draggedCardElement.id, 'Romaji:', draggedCardElement.dataset.romaji, 'Correct Cell:', draggedCardElement.dataset.correctCell);
-    }
-
-    function handleDragEnd(event) {
-        console.log('DragEnd for:', event.target.id);
-    }
-
-    function handleDragOver(event) {
-        event.preventDefault();
-    }
-
-function handleDrop(event) {
-    event.preventDefault();
-    const targetCell = event.target.closest('.dropzone');
-    const draggedCardId = event.dataTransfer.getData('text/plain'); // カードのIDを取得
-
-    // draggedCardElement は dragstart イベントで設定されているはず
-    if (draggedCardElement && draggedCardElement.id === draggedCardId && targetCell) {
-        const droppedCardRomaji = draggedCardElement.dataset.romaji;
-        const targetCellId = targetCell.id;
-
-        console.log('Attempting Drop:', draggedCardElement.id, `(R: "${droppedCardRomaji}")`, 'on cell:', targetCellId);
-
-        let isCorrectPlacement = false;
-        let matchingCardDef = null; // 一致したカード定義を保持
-
-        // vacCardsDataをループして、targetCellIdにこのカードのテキストが対応する定義があるかチェック
-        for (const cardDef of vacCardsData) {
-            if (cardDef.correctCell === targetCellId && cardDef.romaji === droppedCardRomaji) {
-                isCorrectPlacement = true;
-                matchingCardDef = cardDef; // 一致した定義を保存
-                break;
-            }
-        }
-
-        if (isCorrectPlacement && matchingCardDef) {
-            // 正解の場合
-            if (targetCell.children.length === 0) { // セルが空の場合のみ配置
-                targetCell.appendChild(draggedCardElement); // 実際にドラッグされたカードを移動
-                
-                // ★★★ 正解カードにクラスを追加 ★★★
-                draggedCardElement.classList.add('placed-correctly');
-                console.log('Added .placed-correctly to:', draggedCardElement.id, 'Current classes:', draggedCardElement.className);
-
-                currentScore++;
-                updateScoreDisplay();
-                console.log('Correct! Placed card:', draggedCardElement.id, 'matching definition:', matchingCardDef.id);
-
-                if (currentScore === totalCards && totalCards > 0) {
-                    setTimeout(() => {
-                        alert("素晴らしい！全問正解です！");
-                    }, 100);
-                }
-            } else {
-                console.log('Cell is already occupied. Card returned to cards area.');
-                if (cardsArea) cardsArea.appendChild(draggedCardElement); // 元の場所に戻す
-            }
-        } else {
-            // 不正解の場合
-            console.log('Incorrect placement! Card returned to cards area. Details:');
-            console.log(' - Dragged Card Romaji:', `"${droppedCardRomaji}"`);
-            console.log(' - Target Cell ID:', `"${targetCellId}"`);
-            console.log(' - No matching definition found in vacCardsData for this cell and romaji combination.');
-            if (cardsArea) cardsArea.appendChild(draggedCardElement); // 元の場所に戻す
-        }
-    }
-    draggedCardElement = null; // ドロップ処理が終わったらドラッグ中カード情報をクリア
-}
-    dropzones.forEach(zone => {
-        zone.addEventListener('dragover', handleDragOver);
-        zone.addEventListener('drop', handleDrop);
-    });
-
-    if (resetButton) {
-        resetButton.addEventListener('click', () => {
-            console.log('Reset button clicked');
-            initializePuzzle();
-        });
-    }
-
-    initializePuzzle();
-});
-</script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 // Data for dātṛ- (m.) declension puzzle (与える者、与え手 - 男性)
 
-const datrMCardsData = [
+const puzzleData = [
     // 単数 (Singular)
     { id: 'datr-m-nom-sg',  romaji: 'dātā',           devanagari: 'दाता',          acceptableCells: ['cell-nom-sg'] },
     { id: 'datr-m-acc-sg',  romaji: 'dātāram',        devanagari: 'दातारम्',       acceptableCells: ['cell-acc-sg'] },

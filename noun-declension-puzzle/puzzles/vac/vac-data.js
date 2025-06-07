@@ -1,6 +1,6 @@
 // Data for vāc- (f. "speech, word") declension puzzle
 
-const vacCardsData = [
+const puzzleData = [
     // 単数 (Singular)
     { id: 'card-vac-nom-sg',  romaji: 'vāk',      devanagari: 'वाक्',    correctCell: 'cell-nom-sg' },
     { id: 'card-vac-acc-sg',  romaji: 'vācam',    devanagari: 'वाचम्',   correctCell: 'cell-acc-sg' },

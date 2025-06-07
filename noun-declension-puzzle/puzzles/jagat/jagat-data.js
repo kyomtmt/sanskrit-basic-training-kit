@@ -1,6 +1,6 @@
 // Data for jagat declension puzzle
 
-const jagatCardsData = [
+const puzzleData = [
     // 単数 (Singular)
     { id: 'card-jagat-nom-sg',  romaji: 'jagat',    devanagari: 'जगत्',    correctCell: 'cell-nom-sg' },
     { id: 'card-jagat-acc-sg',  romaji: 'jagat',    devanagari: 'जगत्',    correctCell: 'cell-acc-sg' }, // 中性なので主格と同じ

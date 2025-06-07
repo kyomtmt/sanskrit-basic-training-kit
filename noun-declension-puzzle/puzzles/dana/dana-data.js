@@ -1,6 +1,6 @@
 // Data for dāna (n.) declension puzzle
 
-const danaCardsData = [
+const puzzleData = [
     // 単数 (Singular)
     { id: 'card-dana-nom-sg',  romaji: 'dānam',    devanagari: 'दानम्',   correctCell: 'cell-nom-sg' }, // N. Ac. sg. dānam
     { id: 'card-dana-acc-sg',  romaji: 'dānam',    devanagari: 'दानम्',   correctCell: 'cell-acc-sg' }, // N. Ac. sg. dānam

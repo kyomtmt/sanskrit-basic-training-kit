@@ -1,6 +1,6 @@
 // Data for go- (m./f.) declension puzzle (牛 - 男性/女性)
 
-const goCardsData = [
+const puzzleData = [
     // 単数 (Singular)
     // 主格・呼格が同じ gauḥ
     { id: 'go-nv-sg-1', romaji: 'gauḥ',    devanagari: 'गौः',   acceptableCells: ['cell-nom-sg', 'cell-voc-sg'] },

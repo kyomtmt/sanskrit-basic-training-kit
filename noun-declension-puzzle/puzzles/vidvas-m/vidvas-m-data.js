@@ -1,6 +1,6 @@
 // Data for vidvas (m.) declension puzzle (知っている者 - 男性)
 
-const vidvasMCardsData = [
+const puzzleData = [
     // 単数 (Singular) - 男性
     { id: 'vidvas-m-nom-sg',  romaji: 'vidvān',      devanagari: 'विद्वान्',     acceptableCells: ['cell-nom-sg'] },
     { id: 'vidvas-m-acc-sg',  romaji: 'vidvāṃsam',   devanagari: 'विद्वांसम्',   acceptableCells: ['cell-acc-sg'] },

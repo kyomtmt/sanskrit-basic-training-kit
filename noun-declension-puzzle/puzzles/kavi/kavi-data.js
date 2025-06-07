@@ -1,6 +1,6 @@
 // Data for kavi (m.) declension puzzle
 
-const kaviCardsData = [
+const puzzleData = [
     // 単数 (Singular)
     { id: 'card-kavi-nom-sg',  romaji: 'kaviḥ',    devanagari: 'कविः',   correctCell: 'cell-nom-sg' },
     { id: 'card-kavi-acc-sg',  romaji: 'kavim',    devanagari: 'कविम्',   correctCell: 'cell-acc-sg' },

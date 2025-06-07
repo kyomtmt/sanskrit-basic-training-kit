@@ -1,6 +1,6 @@
 // Data for tapasvin- (m. "ascetic") declension puzzle
 
-const tapasvinCardsData = [
+const puzzleData = [
     // 単数 (Singular)
     { id: 'card-tapasvin-nom-sg',  romaji: 'tapasvī',      devanagari: 'तपस्वी',     correctCell: 'cell-nom-sg' },
     { id: 'card-tapasvin-acc-sg',  romaji: 'tapasvinam',   devanagari: 'तपस्विनम्',  correctCell: 'cell-acc-sg' },
