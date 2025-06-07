@@ -16,7 +16,7 @@ const pronounPuzzleData = {
     { id: "card-adas-n-nomacc-du-2", text: "amū",      acceptableCells: ["cell-nom-du", "cell-acc-du"] },
     { id: "card-adas-n-insdatabl-du-1", text: "amūbhyām", acceptableCells: ["cell-ins-du", "cell-dat-du", "cell-abl-du"] },
     { id: "card-adas-n-insdatabl-du-2", text: "amūbhyām", acceptableCells: ["cell-ins-du", "cell-dat-du", "cell-abl-du"] },
-    { id:: "card-adas-n-insdatabl-du-3", text: "amūbhyām", acceptableCells: ["cell-ins-du", "cell-dat-du", "cell-abl-du"] },
+    { id: "card-adas-n-insdatabl-du-3", text: "amūbhyām", acceptableCells: ["cell-ins-du", "cell-dat-du", "cell-abl-du"] },
     { id: "card-adas-n-genloc-du-1", text: "amuyoḥ",   acceptableCells: ["cell-gen-du", "cell-loc-du"] },
     { id: "card-adas-n-genloc-du-2", text: "amuyoḥ",   acceptableCells: ["cell-gen-du", "cell-loc-du"] },
     // Plural
