@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>名詞の格語尾パズル：男性・女性</title>
+    <link rel="icon" href="/sanskrit-basic-training-kit/favicon.ico">
     <!-- 共通スタイルシートへのパスを修正 -->
     <link rel="stylesheet" href="../common/style.css">
     <style>
@@ -41,13 +42,13 @@
     <p id="puzzle-main-description">一般的な男性名詞・女性名詞の格語尾を正しい位置に配置してください。</p>
 
     <div class="controls">
-        <p style="display: inline-block; margin-right: 20px;">スコア: <span id="score">0</span> / <span id="total-score">0</span></p>
         <button id="reset-button">リセット</button>
+        <button id="show-answer-button">正解を見る</button>
     </div>
 
     <div class="puzzle-board">
         <div id="declension-table-area">
-            <p>活用表 (ここにカードをドラッグ＆ドロップ)</p>
+            <p>曲用表 (ここにカードをドラッグ＆ドロップ)</p>
             <table id="declension-table">
                 <thead>
                     <tr>
@@ -122,8 +123,10 @@
         </div>
     </div>
 
-    <!-- 全体メニューに戻るリンクのパスを修正 -->
-    <p><a href="../../index.html">全体メニューに戻る</a></p>
+<div class="navigation-links" style="text-align: center; margin-top: 30px;">
+    <a href="../index.html" style="display: block; margin-bottom: 10px;">名詞曲用トップに戻る</a>
+    <a href="../../index.html" style="display: block;">全体のトップメニューに戻る</a>
+</div>
 
     <!-- 共通スクリプトへのパスを修正 (もしあれば) -->
     <!-- <script src="../../common/script.js"></script> -->
@@ -139,6 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cardsArea = document.getElementById('cards-area');
     const dropzones = document.querySelectorAll('.dropzone');
     const resetButton = document.getElementById('reset-button');
+    const showAnswerButton = document.getElementById('show-answer-button');
     const ruleExplanationContainer = document.getElementById('rule-explanation-container');
     const ruleExplanationContent = document.getElementById('rule-explanation-content');
 
@@ -335,6 +339,28 @@ function handleDrop(event) {
             // console.log('Reset button clicked');
             initializePuzzle();
         });
+        if (showAnswerButton) {
+    showAnswerButton.addEventListener('click', () => {
+        if (cardsArea) cardsArea.innerHTML = '';
+        dropzones.forEach(zone => zone.innerHTML = '');
+        
+        const cardDataCopy = JSON.parse(JSON.stringify(cardDataSource));
+
+        dropzones.forEach(zone => {
+            const cellId = zone.id;
+            const cardIndex = cardDataCopy.findIndex(card => card.acceptableCells.includes(cellId));
+
+            if (cardIndex !== -1) {
+                const cardInfo = cardDataCopy[cardIndex];
+                const answerElement = document.createElement('div');
+                answerElement.textContent = cardInfo.romaji;
+                answerElement.classList.add('card', 'placed-correctly');
+                zone.appendChild(answerElement);
+                cardDataCopy.splice(cardIndex, 1);
+            }
+        });
+    });
+}
     }
 
     initializePuzzle();
