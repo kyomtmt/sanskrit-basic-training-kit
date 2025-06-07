@@ -1,5 +1,5 @@
 // pronoun-declension-puzzle/puzzles/adas-n/adas-n-data.js
-const pronounPuzzleData = {
+const puzzleData = {
   word: "adas (neuter)",
   translation: "あれ (中性)",
   cards: [
