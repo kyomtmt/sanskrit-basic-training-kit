@@ -5,7 +5,7 @@ const declensionPuzzleTitle = "名詞の格語尾パズル：中性";
 const declensionPuzzleDescription = "一般的な中性名詞の格語尾を正しい位置に配置してください。";
 
 // 中性名詞の格語尾カードデータ (全24枚)
-const puzzleData = [
+const nEndingCardsData = [
     // Singular (単数) n. - 8枚
     { // 単数主格・対格・呼格用 「語幹のみ」カード (1枚目)
         id: "n-stem-nav-sg-1", // ID例変更
