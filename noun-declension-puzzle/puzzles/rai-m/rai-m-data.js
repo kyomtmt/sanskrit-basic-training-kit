@@ -1,6 +1,6 @@
 // Data for rai- (m.) declension puzzle (財産 - 男性)
 
-const raiMCardsData = [
+const puzzleData = [
     // 単数 (Singular)
     { id: 'rai-m-nv-sg-1', romaji: 'rāḥ',        devanagari: 'राः',        acceptableCells: ['cell-nom-sg', 'cell-voc-sg'] },
     { id: 'rai-m-nv-sg-2', romaji: 'rāḥ',        devanagari: 'राः',        acceptableCells: ['cell-nom-sg', 'cell-voc-sg'] },

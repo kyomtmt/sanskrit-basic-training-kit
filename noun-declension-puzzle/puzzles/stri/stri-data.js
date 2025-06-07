@@ -1,6 +1,6 @@
 // Data for strī- (f.) declension puzzle (女)
 
-const striCardsData = [
+const puzzleData = [
     // 単数 (Singular)
     { id: 'stri-nom-sg',  romaji: 'strī',            devanagari: 'स्त्री',          acceptableCells: ['cell-nom-sg'] },
     { id: 'stri-acc-sg',  romaji: 'striyam/strīm',   devanagari: 'स्त्रियम्/स्त्रीम्', acceptableCells: ['cell-acc-sg'] },

@@ -1,6 +1,6 @@
 // Data for ātman- (m. "soul, self") declension puzzle
 
-const atmanCardsData = [
+const puzzleData = [
     // 単数 (Singular)
     { id: 'card-atman-nom-sg',  romaji: 'ātmā',         devanagari: 'आत्मा',        correctCell: 'cell-nom-sg' },
     { id: 'card-atman-acc-sg',  romaji: 'ātmānam',      devanagari: 'आत्मानम्',     correctCell: 'cell-acc-sg' },

@@ -1,6 +1,6 @@
 // Data for pati- (m.) declension puzzle (夫)
 
-const patiCardsData = [
+const puzzleData = [
     // 単数 (Singular) - pati- 特有の活用
     { id: 'pati-nom-sg',  romaji: 'patiḥ',    devanagari: 'पतिः',   acceptableCells: ['cell-nom-sg'] },
     { id: 'pati-acc-sg',  romaji: 'patim',    devanagari: 'पतिम्',   acceptableCells: ['cell-acc-sg'] },

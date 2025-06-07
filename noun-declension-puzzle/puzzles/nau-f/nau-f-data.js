@@ -1,6 +1,6 @@
 // Data for nau- (f.) declension puzzle (舟 - 女性)
 
-const nauFCardsData = [
+const puzzleData = [
     // 単数 (Singular)
     { id: 'nau-f-nv-sg-1', romaji: 'nauḥ',        devanagari: 'नौः',   acceptableCells: ['cell-nom-sg', 'cell-voc-sg'] },
     { id: 'nau-f-nv-sg-2', romaji: 'nauḥ',        devanagari: 'नौः',   acceptableCells: ['cell-nom-sg', 'cell-voc-sg'] },

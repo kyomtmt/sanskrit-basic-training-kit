@@ -1,6 +1,6 @@
 // Data for akṣi- (n.) declension puzzle (目)
 
-const akṣiCardsData = [
+const puzzleData = [
     // 単数 (Singular)
     // 主格・対格が同じ akṣi
     { id: 'akṣi-na-sg-1', romaji: 'akṣi',           devanagari: 'अक्षि',         acceptableCells: ['cell-nom-sg', 'cell-acc-sg'] },

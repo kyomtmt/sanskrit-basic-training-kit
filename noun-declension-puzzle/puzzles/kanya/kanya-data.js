@@ -1,6 +1,6 @@
 // Data for kanyā (f.) declension puzzle
 
-const kanyaCardsData = [
+const puzzleData = [
     // 単数 (Singular)
     { id: 'card-kanya-nom-sg',  romaji: 'kanyā',    devanagari: 'कन्या',   correctCell: 'cell-nom-sg' },
     { id: 'card-kanya-acc-sg',  romaji: 'kanyām',   devanagari: 'कन्याम्',  correctCell: 'cell-acc-sg' },

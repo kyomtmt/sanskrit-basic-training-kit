@@ -1,6 +1,6 @@
 // Data for mātṛ- (f.) declension puzzle (母 - 女性)
 
-const matrFCardsData = [
+const puzzleData = [
     // 単数 (Singular)
     { id: 'matr-f-nom-sg',  romaji: 'mātā',           devanagari: 'माता',          acceptableCells: ['cell-nom-sg'] },
     { id: 'matr-f-acc-sg',  romaji: 'mātaram',        devanagari: 'मातरम्',       acceptableCells: ['cell-acc-sg'] },

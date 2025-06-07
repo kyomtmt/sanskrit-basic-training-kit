@@ -1,6 +1,6 @@
 // Data for vidvas (n.) declension puzzle (知った、賢者 - 中性)
 
-const vidvasNCardsData = [
+const puzzleData = [
     // 単数 (Singular) - 中性
     // 主格・対格・呼格が同じ vidvat なので、カードを3枚用意
     { id: 'vidvas-n-nav-sg-1', romaji: 'vidvat',      devanagari: 'विद्वत्',     acceptableCells: ['cell-nom-sg', 'cell-acc-sg', 'cell-voc-sg'] },

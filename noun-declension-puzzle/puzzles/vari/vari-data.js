@@ -1,6 +1,6 @@
 // Data for vāri (n.) declension puzzle
 
-const variCardsData = [
+const puzzleData = [
     // 単数 (Singular)
     { id: 'card-vari-nom-sg',  romaji: 'vāri',     devanagari: 'वारि',    acceptableCells: ['cell-nom-sg'] }, // ★修正
     { id: 'card-vari-acc-sg',  romaji: 'vāri',     devanagari: 'वारि',    acceptableCells: ['cell-acc-sg'] }, // ★修正

@@ -1,6 +1,6 @@
 // Data for prāc- (m.) declension puzzle (東方の、前方へ - 男性)
 
-const pracMCardsData = [
+const puzzleData = [
     // 単数 (Singular) - 男性
     { id: 'prac-m-nom-sg',  romaji: 'prāṅ',        devanagari: 'प्राङ्',        acceptableCells: ['cell-nom-sg'] }, // N.V.sg. prāṅ (強語幹の特殊形)
     { id: 'prac-m-acc-sg',  romaji: 'prāñcam',     devanagari: 'प्राञ्चम्',     acceptableCells: ['cell-acc-sg'] }, // 強語幹

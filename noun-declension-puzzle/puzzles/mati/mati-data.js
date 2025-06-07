@@ -1,6 +1,6 @@
 // Data for mati (f.) declension puzzle
 
-const matiCardsData = [
+const puzzleData = [
     // 単数 (Singular)
     { id: 'mati-nom-sg',  romaji: 'matiḥ',        devanagari: 'मतिः',   acceptableCells: ['cell-nom-sg'] },
     { id: 'mati-acc-sg',  romaji: 'matim',        devanagari: 'मतिम्',   acceptableCells: ['cell-acc-sg'] },

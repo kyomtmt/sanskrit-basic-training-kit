@@ -1,6 +1,6 @@
 // Data for brahman- (m. "Brahmā, the creator god") declension puzzle
 
-const brahmanMCardsData = [ // "M" for Masculine
+const puzzleData = [ // "M" for Masculine
     // 単数 (Singular) - 男性
     { id: 'card-brahman-m-nom-sg',  romaji: 'brahmā',       devanagari: 'ब्रह्मा',      correctCell: 'cell-nom-sg' },
     { id: 'card-brahman-m-acc-sg',  romaji: 'brahmāṇam',    devanagari: 'ब्रह्माणम्',   correctCell: 'cell-acc-sg' },

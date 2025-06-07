@@ -1,6 +1,6 @@
 // Data for dhī- (f.) declension puzzle (思慮)
 
-const dhiCardsData = [
+const puzzleData = [
     // 単数 (Singular)
     // 主格・呼格が同じ dhīḥ
     { id: 'dhi-nv-sg-1', romaji: 'dhīḥ',            devanagari: 'धीः',          acceptableCells: ['cell-nom-sg', 'cell-voc-sg'] },

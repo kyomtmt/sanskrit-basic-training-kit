@@ -1,6 +1,6 @@
 // Data for guru- (n.) declension puzzle (重い - 中性) - 最新の活用表に基づいて修正
 
-const guruNCardsData = [
+const puzzleData = [
     // 単数 (Singular) - 中性
     { id: 'guru-n-na-sg-1', romaji: 'guru',           devanagari: 'गुरु',         acceptableCells: ['cell-nom-sg', 'cell-acc-sg'] },
     { id: 'guru-n-na-sg-2', romaji: 'guru',           devanagari: 'गुरु',         acceptableCells: ['cell-nom-sg', 'cell-acc-sg'] },

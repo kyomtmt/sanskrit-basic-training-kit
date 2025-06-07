@@ -3,22 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>名詞活用パズル: dyu-/div- (天)</title> <!-- ← 修正 -->
+    <title>名詞曲用パズル: dyu-/div- (天)</title> <!-- ← 修正 -->
+    <link rel="icon" href="/sanskrit-basic-training-kit/favicon.ico">
     <link rel="stylesheet" href="../../common/style.css">
     <style>
         /* dyu パズル専用のスタイルがあればここに記述 */
     </style>
 </head><body>
-    <h1>名詞活用パズル: dyu-/div- (天)</h1> <!-- ← 修正 -->
+    <h1>名詞曲用パズル: dyu-/div- (天)</h1> <!-- ← 修正 -->
 
-    <div class="controls">
-        <p style="display: inline-block; margin-right: 20px;">スコア: <span id="score">0</span> / 24</p>
-        <button id="reset-button">リセット</button>
-    </div>
+<div class="controls">
+    <button id="reset-button">リセット</button>
+    <button id="show-answer-button">正解を見る</button>
+</div>
 
     <div class="puzzle-board">
         <div id="declension-table-area">
-            <p>活用表 (ここにカードをドラッグ＆ドロップ)</p>
+            <p>曲用表 (ここにカードをドラッグ＆ドロップ)</p>
             <table id="declension-table">
                 <thead>
                     <tr>
@@ -86,127 +87,14 @@
         </div>
     </div>
 
-    <p><a href="../../../index.html">全体メニューに戻る</a></p>
+<div class="navigation-links" style="text-align: center; margin-top: 30px;">
+    <a href="../../index.html" style="display: block; margin-bottom: 10px;">名詞曲用トップに戻る</a>
+    <a href="../../../index.html" style="display: block;">全体のトップメニューに戻る</a>
+</div>
 
+    <script src="dyu-data.js"></script> 
     <script src="../../common/script.js"></script> 
-    <script src="dyu-data.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    console.log("dyu-/div- (天) puzzle page loaded"); // ← 修正 (任意)
+ 
 
-    const scoreElement = document.getElementById('score');
-    const cardsArea = document.getElementById('cards-area');
-    const dropzones = document.querySelectorAll('.dropzone');
-    const resetButton = document.getElementById('reset-button');
-
-    let currentScore = 0;
-    let totalCards = 0;
-    let draggedCardElement = null;
-
-    function updateScoreDisplay() {
-        if (scoreElement) {
-            scoreElement.textContent = `${currentScore} / ${totalCards}`;
-        }
-    }
-
-    function initializePuzzle() {
-        currentScore = 0;
-        draggedCardElement = null;
-        if (cardsArea) cardsArea.innerHTML = '';
-        dropzones.forEach(zone => {
-            zone.innerHTML = '';
-        });
-
-        if (typeof dyuCardsData !== 'undefined' && dyuCardsData.length > 0) {
-            totalCards = dyuCardsData.length;
-            console.log("dyuCardsData is available:", totalCards, "cards");
-
-            const shuffledCardsData = [...dyuCardsData].sort(() => Math.random() - 0.5);
-
-            shuffledCardsData.forEach(cardData => {
-                const cardElement = document.createElement('div');
-                cardElement.id = cardData.id;
-                cardElement.classList.add('card');
-                cardElement.draggable = true;
-                cardElement.textContent = cardData.romaji;
-                cardElement.dataset.romaji = cardData.romaji;
-
-                cardElement.addEventListener('dragstart', handleDragStart);
-                cardElement.addEventListener('dragend', handleDragEnd);
-
-                if (cardsArea) cardsArea.appendChild(cardElement);
-            });
-        } else {
-            totalCards = 0;
-            console.error("dyuCardsData is NOT available or empty.");
-            if (cardsArea) cardsArea.textContent = "カードデータの読み込みに失敗しました。";
-        }
-        updateScoreDisplay();
-    }
-
-    function handleDragStart(event) {
-        draggedCardElement = event.target;
-        event.dataTransfer.setData('text/plain', event.target.id);
-    }
-
-    function handleDragEnd(event) { /* 必要なら処理を追加 */ }
-
-    function handleDragOver(event) {
-        event.preventDefault();
-    }
-
-    function handleDrop(event) {
-        event.preventDefault();
-        const targetCell = event.target.closest('.dropzone');
-        const draggedCardId = event.dataTransfer.getData('text/plain');
-
-        if (draggedCardElement && draggedCardElement.id === draggedCardId && targetCell) {
-            const targetCellId = targetCell.id;
-
-            const draggedCardDefinition = dyuCardsData.find(cardDef => cardDef.id === draggedCardElement.id);
-
-            if (draggedCardDefinition) {
-                if (draggedCardDefinition.acceptableCells && Array.isArray(draggedCardDefinition.acceptableCells)) {
-                    if (draggedCardDefinition.acceptableCells.includes(targetCellId)) {
-                        if (targetCell.children.length === 0) {
-                            targetCell.appendChild(draggedCardElement);
-                            draggedCardElement.classList.add('placed-correctly');
-                            currentScore++;
-                            updateScoreDisplay();
-                            if (currentScore === totalCards && totalCards > 0) {
-                                setTimeout(() => { alert("素晴らしい！全問正解です！"); }, 100);
-                            }
-                        } else {
-                            if (cardsArea) cardsArea.appendChild(draggedCardElement);
-                        }
-                    } else {
-                        if (cardsArea) cardsArea.appendChild(draggedCardElement);
-                    }
-                } else {
-                    console.error("acceptableCells is missing or not an array for card:", draggedCardDefinition);
-                    if (cardsArea) cardsArea.appendChild(draggedCardElement); 
-                }
-            } else {
-                console.error("Dragged card definition not found in dyuCardsData for ID:", draggedCardElement.id);
-                if (cardsArea) cardsArea.appendChild(draggedCardElement);
-            }
-        }
-        draggedCardElement = null;
-    }
-
-    dropzones.forEach(zone => {
-        zone.addEventListener('dragover', handleDragOver);
-        zone.addEventListener('drop', handleDrop);
-    });
-
-    if (resetButton) {
-        resetButton.addEventListener('click', () => {
-            initializePuzzle();
-        });
-    }
-
-    initializePuzzle();
-});
-</script>
 </body>
 </html>

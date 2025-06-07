@@ -1,6 +1,6 @@
 // Data for tudat- (n. "striking", present participle) declension puzzle
 
-const tudatNCardsData = [ // "N" for Neuter
+const puzzleData = [ // "N" for Neuter
     // 単数 (Singular) - 中性
     { id: 'card-tudat-n-nom-sg',  romaji: 'tudat',        devanagari: 'तुदत्',       correctCell: 'cell-nom-sg' },
     { id: 'card-tudat-n-acc-sg',  romaji: 'tudat',        devanagari: 'तुदत्',       correctCell: 'cell-acc-sg' }, // 中性: 主格と同じ

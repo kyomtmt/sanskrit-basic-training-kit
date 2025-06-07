@@ -1,6 +1,6 @@
 // Data for brahman- (n. "Brahman, the Absolute") declension puzzle
 
-const brahmanNCardsData = [ // "N" for Neuter
+const puzzleData = [ // "N" for Neuter
     // 単数 (Singular) - 中性
     { id: 'card-brahman-n-nom-sg',  romaji: 'brahma',       devanagari: 'ब्रह्म',       correctCell: 'cell-nom-sg' },
     { id: 'card-brahman-n-acc-sg',  romaji: 'brahma',       devanagari: 'ब्रह्म',       correctCell: 'cell-acc-sg' }, // 中性: 主格と同じ

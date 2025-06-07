@@ -1,6 +1,6 @@
 // Data for apsaras- (f. "celestial nymph") declension puzzle
 
-const apsarasCardsData = [
+const puzzleData = [
     // 単数 (Singular)
     { id: 'card-apsaras-nom-sg',  romaji: 'apsarāḥ',     devanagari: 'अप्सराः',    correctCell: 'cell-nom-sg' },
     { id: 'card-apsaras-acc-sg',  romaji: 'apsarasam',   devanagari: 'अप्सरसम्',   correctCell: 'cell-acc-sg' },

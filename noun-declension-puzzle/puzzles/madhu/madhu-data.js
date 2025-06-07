@@ -1,6 +1,6 @@
 // Data for madhu (n.) declension puzzle
 
-const madhuCardsData = [
+const puzzleData = [
     // 単数 (Singular)
     // 主格・対格が同じ madhu なので、カードを2枚用意
     { id: 'madhu-na-sg-1',  romaji: 'madhu',          devanagari: 'मधु',         acceptableCells: ['cell-nom-sg', 'cell-acc-sg'] },

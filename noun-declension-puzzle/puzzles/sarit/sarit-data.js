@@ -1,6 +1,6 @@
 // Data for sarit declension puzzle (Reflecting shared forms as per Table 23's intent)
 
-const saritCardsData = [
+const puzzleData = [
     // 単数 (Singular)
     { id: 'card-sarit-nom-sg',  romaji: 'sarit',    devanagari: 'सरित्',    correctCell: 'cell-nom-sg' },
     { id: 'card-sarit-acc-sg',  romaji: 'saritam',  devanagari: 'सरितम्',  correctCell: 'cell-acc-sg' },

@@ -1,6 +1,6 @@
 // Data for dhenu (f.) declension puzzle
 
-const dhenuCardsData = [
+const puzzleData = [
     // 単数 (Singular)
     { id: 'dhenu-nom-sg',  romaji: 'dhenuḥ',          devanagari: 'धेनुः',       acceptableCells: ['cell-nom-sg'] },
     { id: 'dhenu-acc-sg',  romaji: 'dhenum',          devanagari: 'धेनुम्',       acceptableCells: ['cell-acc-sg'] },

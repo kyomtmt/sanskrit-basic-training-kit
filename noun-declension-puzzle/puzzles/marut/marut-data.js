@@ -1,6 +1,6 @@
 // Data for marut declension puzzle
 
-const marutCardsData = [
+const puzzleData = [
     // 単数 (Singular)
     { id: 'card-marut-nom-sg',  romaji: 'marut',    devanagari: 'मरुत्',   correctCell: 'cell-nom-sg' },
     { id: 'card-marut-acc-sg',  romaji: 'marutam',  devanagari: 'मरुतम्',  correctCell: 'cell-acc-sg' },

@@ -1,6 +1,6 @@
 // Data for tudat- (m. "striking", present participle) declension puzzle
 
-const tudatMCardsData = [ // "M" for Masculine
+const puzzleData = [ // "M" for Masculine
     // 単数 (Singular) - 男性
     { id: 'card-tudat-m-nom-sg',  romaji: 'tudan',        devanagari: 'तुदन्',       correctCell: 'cell-nom-sg' },
     { id: 'card-tudat-m-acc-sg',  romaji: 'tudantam',     devanagari: 'तुदन्तम्',     correctCell: 'cell-acc-sg' },

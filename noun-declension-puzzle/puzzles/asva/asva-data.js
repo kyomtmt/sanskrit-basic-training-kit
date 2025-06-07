@@ -1,6 +1,6 @@
 // Data for aśva declension puzzle
 
-const asvaCardsData = [ // 変数名から M を削除
+const puzzleData = [ // 変数名から M を削除
     // 単数 (Singular)
     { id: 'card-asva-nom-sg',  romaji: 'aśvaḥ',    devanagari: 'अश्वः',   correctCell: 'cell-nom-sg' }, // idから -m を削除
     { id: 'card-asva-acc-sg',  romaji: 'aśvam',    devanagari: 'अश्वम्',  correctCell: 'cell-acc-sg' }, // 以下同様にidから -m を削除
