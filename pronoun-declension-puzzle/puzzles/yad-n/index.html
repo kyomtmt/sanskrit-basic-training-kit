@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>代名詞曲用パズル: yad (関係代名詞 - 中性)</title>
+    <link rel="icon" href="/sanskrit-basic-training-kit/favicon.ico">
+    <link rel="stylesheet" href="../../common/style.css">
+</head>
+<body>
+    <h1>代名詞曲用パズル: yad (関係代名詞 - 中性)</h1>
+    <div class="controls">
+        <button id="reset-button">リセット</button>
+        <button id="show-answer-button">正解を見る</button>
+    </div>
+    <div class="puzzle-board">
+        <div id="declension-table-area">
+            <p class="table-caption">曲用表 (ここにカードをドラッグ＆ドロップ)</p>
+            <table id="declension-table">
+                <!-- Table structure is identical to other puzzles -->
+                <thead>
+                    <tr>
+                        <th>格</th>
+                        <th>単数 (Singular)</th>
+                        <th>両数 (Dual)</th>
+                        <th>複数 (Plural)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>主格 (Nominative)</td>
+                        <td id="cell-nom-sg" data-case="Nominative" data-number="Singular" class="dropzone"></td>
+                        <td id="cell-nom-du" data-case="Nominative" data-number="Dual" class="dropzone"></td>
+                        <td id="cell-nom-pl" data-case="Nominative" data-number="Plural" class="dropzone"></td>
+                    </tr>
+                    <tr>
+                        <td>対格 (Accusative)</td>
+                        <td id="cell-acc-sg" data-case="Accusative" data-number="Singular" class="dropzone"></td>
+                        <td id="cell-acc-du" data-case="Accusative" data-number="Dual" class="dropzone"></td>
+                        <td id="cell-acc-pl" data-case="Accusative" data-number="Plural" class="dropzone"></td>
+                    </tr>
+                    <tr>
+                        <td>具格 (Instrumental)</td>
+                        <td id="cell-ins-sg" data-case="Instrumental" data-number="Singular" class="dropzone"></td>
+                        <td id="cell-ins-du" data-case="Instrumental" data-number="Dual" class="dropzone"></td>
+                        <td id="cell-ins-pl" data-case="Instrumental" data-number="Plural" class="dropzone"></td>
+                    </tr>
+                    <tr>
+                        <td>与格 (Dative)</td>
+                        <td id="cell-dat-sg" data-case="Dative" data-number="Singular" class="dropzone"></td>
+                        <td id="cell-dat-du" data-case="Dative" data-number="Dual" class="dropzone"></td>
+                        <td id="cell-dat-pl" data-case="Dative" data-number="Plural" class="dropzone"></td>
+                    </tr>
+                    <tr>
+                        <td>奪格 (Ablative)</td>
+                        <td id="cell-abl-sg" data-case="Ablative" data-number="Singular" class="dropzone"></td>
+                        <td id="cell-abl-du" data-case="Ablative" data-number="Dual" class="dropzone"></td>
+                        <td id="cell-abl-pl" data-case="Ablative" data-number="Plural" class="dropzone"></td>
+                    </tr>
+                    <tr>
+                        <td>属格 (Genitive)</td>
+                        <td id="cell-gen-sg" data-case="Genitive" data-number="Singular" class="dropzone"></td>
+                        <td id="cell-gen-du" data-case="Genitive" data-number="Dual" class="dropzone"></td>
+                        <td id="cell-gen-pl" data-case="Genitive" data-number="Plural" class="dropzone"></td>
+                    </tr>
+                    <tr>
+                        <td>処格 (Locative)</td>
+                        <td id="cell-loc-sg" data-case="Locative" data-number="Singular" class="dropzone"></td>
+                        <td id="cell-loc-du" data-case="Locative" data-number="Dual" class="dropzone"></td>
+                        <td id="cell-loc-pl" data-case="Locative" data-number="Plural" class="dropzone"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="cards-area"></div>
+    </div>
+    <div class="navigation-links" style="text-align: center; margin-top: 30px;">
+        <a href="../../index.html" style="display: block; margin-bottom: 10px;">代名詞パズルトップに戻る</a>
+        <a href="../../../index.html" style="display: block;">全体のトップメニューに戻る</a>
+    </div>
+    <script src="yad-n-data.js"></script>
+    <script src="../../common/script.js"></script>
+</body>
+</html>
