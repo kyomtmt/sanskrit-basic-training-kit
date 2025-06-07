@@ -26,6 +26,6 @@ const pronounPuzzleData = {
     { id: "card-tad-f-databl-pl-1", text: "tābhyaḥ",  acceptableCells: ["cell-dat-pl", "cell-abl-pl"] },
     { id: "card-tad-f-databl-pl-2", text: "tābhyaḥ",  acceptableCells: ["cell-dat-pl", "cell-abl-pl"] },
     { id: "card-tad-f-gen-pl", text: "tāsām",    acceptableCells: ["cell-gen-pl"] },
-    { id: "card-tad-f-loc-pl", text: "tāsū",     acceptableCells: ["cell-loc-pl"] }
+    { id: "card-tad-f-loc-pl", text: "tāsu",     acceptableCells: ["cell-loc-pl"] }
   ]
 };
