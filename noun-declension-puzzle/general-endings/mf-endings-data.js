@@ -5,7 +5,7 @@ const declensionPuzzleTitle = "名詞の格語尾パズル：男性・女性";
 const declensionPuzzleDescription = "一般的な男性名詞・女性名詞の格語尾を正しい位置に配置してください。";
 
 // 男性・女性名詞の格語尾カードデータ (全24枚)
-const puzzleData = [
+const mfEndingCardsData = [
     // Singular (単数) m./f. - 8枚
     {
         id: "mf-s-nom-sg", // 単数主格
