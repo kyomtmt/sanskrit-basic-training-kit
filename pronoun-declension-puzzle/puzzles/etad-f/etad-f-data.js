@@ -26,6 +26,6 @@ const pronounPuzzleData = {
     { id: "card-etad-f-databl-pl-1", text: "etābhyaḥ",  acceptableCells: ["cell-dat-pl", "cell-abl-pl"] },
     { id: "card-etad-f-databl-pl-2", text: "etābhyaḥ",  acceptableCells: ["cell-dat-pl", "cell-abl-pl"] },
     { id: "card-etad-f-gen-pl", text: "etāsām",    acceptableCells: ["cell-gen-pl"] },
-    { id: "card-etad-f-loc-pl", text: "etāsū",     acceptableCells: ["cell-loc-pl"] }
+    { id: "card-etad-f-loc-pl", text: "etāsu",     acceptableCells: ["cell-loc-pl"] }
   ]
 };
